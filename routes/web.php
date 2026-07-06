@@ -1,5 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\CategoryController;
+
+
+use App\Http\Controllers\ProductController as CustomerProductController;
+use App\Http\Controllers\OrderController as CustomerOrderController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/products', CustomerProductController::class)->name('profile.edit');
+    Route::resource('/products', CustomerProductController::class);
     Route::resource('/orders', CustomerOrderController::class);
     Route::resource('/carts', CartController::class);
     Route::resource('/checkouts', CheckoutController::class);
