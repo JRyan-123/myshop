@@ -27,4 +27,39 @@ class Product extends Model
     {
         return $this->hasMany(Order_item::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where('name', 'like', "%{$search}%");
+    }
+
+    public function scopeCategory($query, $slug)
+    {
+        if (!$slug) {
+            return $query;
+        }
+
+        return $query->whereHas('category', function ($q) use ($slug) {
+            $q->where('slug', $slug);
+        });
+    }
+
+    public function scopeSort($query, $sort)
+    {
+        return match ($sort) {
+            'price_asc'  => $query->orderBy('price'),
+            'price_desc' => $query->orderByDesc('price'),
+            'newest'     => $query->latest(),
+            default      => $query->orderBy('title'),
+        };
+    }
 }
