@@ -11,8 +11,8 @@ const props = defineProps({
     categories: Array,
     filters: Object,
 });
+console.log(props.products)
 
-console.log("Products:", props.products);
 
 const selectCategory = (category) => {
     router.get(
@@ -65,7 +65,7 @@ const selectCategory = (category) => {
 
             <!-- Product count -->
             <p class="mb-6 text-sm text-[#1B1B1F]/60">
-                Showing {{ products.data.length }}
+                Showing {{ products.data.length }} of {{ products.total }}  book{{ products.total === 1 ? '' : 's' }}
             </p>
 
             <!-- Product grid -->
