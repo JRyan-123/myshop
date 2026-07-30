@@ -42,16 +42,16 @@ class Product extends Model
         return $query->where('name', 'like', "%{$search}%");
     }
 
-    public function scopeCategory($query, $slug)
-    {
-        if (!$slug) {
-            return $query;
-        }
-
-        return $query->whereHas('category', function ($q) use ($slug) {
-            $q->where('slug', $slug);
-        });
-    }
+    public function scopeCategory($query, $category)
+{
+    return $query->when(
+        $category,
+        fn ($query) => $query->whereHas(
+            'category',
+            fn ($query) => $query->where('slug', $category)
+        )
+    );
+}
 
     public function scopeSort($query, $sort)
     {

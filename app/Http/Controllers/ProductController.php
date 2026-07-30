@@ -22,7 +22,7 @@ class ProductController extends Controller
         ->withQueryString();
 
     return Inertia::render('Products/Index', [
-        'products' => ProductResource::collection($products),
+        'products' => $products,
         'categories' => Category::orderBy('name')
             ->get(['id', 'name', 'slug']),
         'filters' => $request->only([

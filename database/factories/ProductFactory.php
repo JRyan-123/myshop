@@ -36,7 +36,7 @@ class ProductFactory extends Factory
 
             'stock' => fake()->numberBetween(5, 50),
 
-            'image_path' => 'books/default-book.jpg',
+            'image_path' => 'books/book' . rand(1, 12) . '.jpg',
 
             'is_active' => true,
         ];
