@@ -9,24 +9,18 @@ use App\Http\Controllers\ProductController as CustomerProductController;
 use App\Http\Controllers\OrderController as CustomerOrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/', function () {
+Route::get('/products', function () {
     return Inertia::render('Products/Index');
-})->middleware(['auth', 'verified'])->name('products');
+})->middleware(['auth', 'verified'])->name('products.index');
 
 
 

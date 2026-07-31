@@ -47,8 +47,8 @@ const selectCategory = (category) => {
                 <!-- All category -->
                 <button @click="selectCategory('All')"
                     class="rounded-full border px-4 py-2 text-sm font-medium transition" :class="!filters.category
-                            ? 'border-[#1B1B1F] bg-[#1B1B1F] text-[#F7F2E7]'
-                            : 'border-[#1B1B1F]/20 hover:border-[#B08D57] hover:text-[#B08D57]'
+                        ? 'border-[#1B1B1F] bg-[#1B1B1F] text-[#F7F2E7]'
+                        : 'border-[#1B1B1F]/20 hover:border-[#B08D57] hover:text-[#B08D57]'
                         ">
                     All
                 </button>
@@ -56,8 +56,8 @@ const selectCategory = (category) => {
                 <!-- Database categories -->
                 <button v-for="cat in categories" :key="cat.id" @click="selectCategory(cat.slug)"
                     class="rounded-full border px-4 py-2 text-sm font-medium transition" :class="filters.category === cat.slug
-                            ? 'border-[#1B1B1F] bg-[#1B1B1F] text-[#F7F2E7]'
-                            : 'border-[#1B1B1F]/20 hover:border-[#B08D57] hover:text-[#B08D57]'
+                        ? 'border-[#1B1B1F] bg-[#1B1B1F] text-[#F7F2E7]'
+                        : 'border-[#1B1B1F]/20 hover:border-[#B08D57] hover:text-[#B08D57]'
                         ">
                     {{ cat.name }}
                 </button>
@@ -65,7 +65,7 @@ const selectCategory = (category) => {
 
             <!-- Product count -->
             <p class="mb-6 text-sm text-[#1B1B1F]/60">
-                Showing {{ products.data.length }} of {{ products.total }}  book{{ products.total === 1 ? '' : 's' }}
+                Showing {{ products.data.length }} of {{ products.total }} book{{ products.total === 1 ? '' : 's' }}
             </p>
 
             <!-- Product grid -->
@@ -73,14 +73,9 @@ const selectCategory = (category) => {
                 <article v-for="book in products.data" :key="book.id" class="group flex flex-col">
 
                     <!-- Book cover -->
-
                     <a href="#"
                         class="relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition group-hover:shadow-lg">
-                        <img
-        :src="`/${book.image_path}`"
-        :alt="book.title"
-        class="h-full w-full object-cover"
-    />
+                        <img :src="`/${book.image_path}`" :alt="book.title" class="h-full w-full object-cover" />
                     </a>
 
                     <!-- Book information -->

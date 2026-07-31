@@ -4,12 +4,16 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 defineOptions({
     layout: AppLayout
 })
+
 import Category from '@/Components/Home/Category.vue';
 import FeaturedBooks from '@/Components/Home/FeaturedBooks.vue';
-import Navbar from '@/Components/Home/Navbar.vue'
 import { Link } from '@inertiajs/vue3'
 
-
+const props = defineProps({
+    featuredBooks: Array,
+    categories: Array,
+})
+console.log(props.featuredBooks);
 
 const shelf = [
   { title: 'The Long Tide', color: 'bg-[#5B7B6E]' },
@@ -47,7 +51,7 @@ const shelf = [
             Browse books
           </a>
           <a
-            href="#"
+            href="#featured-books"
             class="rounded-full border border-[#1B1B1F]/20 px-6 py-3 text-sm font-medium transition hover:border-[#B08D57] hover:text-[#B08D57]"
           >
             See best sellers
@@ -74,9 +78,9 @@ const shelf = [
     </section>
 
     <!-- Category -->
-    <Category/>
+    <Category :categories="categories" />
 
     <!-- Featured Books -->
-    <FeaturedBooks/>
+    <FeaturedBooks :featuredBooks = "featuredBooks" />
   </div>
 </template>
