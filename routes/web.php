@@ -22,7 +22,9 @@ Route::get('/products', function () {
     return Inertia::render('Products/Index');
 })->middleware(['auth', 'verified'])->name('products.index');
 
-
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('/products', CustomerProductController::class);
 
