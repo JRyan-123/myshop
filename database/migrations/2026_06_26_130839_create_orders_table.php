@@ -24,6 +24,8 @@ return new class extends Migration
                 'cancelled',
                 'failed'
             ])->default('pending');
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('total', 10, 2);
             $table->json('shipping_address');
             $table->decimal('shipping_fee', 10, 2)->default(0);
             $table->timestamps();
