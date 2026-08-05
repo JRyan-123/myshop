@@ -20,12 +20,12 @@ class Product extends Model
 
     public function cartItems(): HasMany
     {
-        return $this->hasMany(Cart_item::class);
+        return $this->hasMany(CartItem::class);
     }
 
     public function orderItems(): HasMany
     {
-        return $this->hasMany(Order_item::class);
+        return $this->hasMany(OrderItem::class);
     }
 
     public function scopeActive($query)
@@ -43,15 +43,15 @@ class Product extends Model
     }
 
     public function scopeCategory($query, $category)
-{
-    return $query->when(
-        $category,
-        fn ($query) => $query->whereHas(
-            'category',
-            fn ($query) => $query->where('slug', $category)
-        )
-    );
-}
+    {
+        return $query->when(
+            $category,
+            fn($query) => $query->whereHas(
+                'category',
+                fn($query) => $query->where('slug', $category)
+            )
+        );
+    }
 
     public function scopeSort($query, $sort)
     {
