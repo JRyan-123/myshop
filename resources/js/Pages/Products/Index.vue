@@ -1,6 +1,7 @@
 <script setup>
 import { router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import { ref } from "vue";
 
 defineOptions({
     layout: AppLayout,
@@ -12,13 +13,27 @@ const props = defineProps({
     filters: Object,
 });
 
-console.log(props.products)
+const search = ref(props.filters.search ?? "");
 
+const searchProducts = () => {
+    router.get(
+        route("products.index"),
+        {
+            search: search.value,
+            category: props.filters.category,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+        }
+    );
+};
 
 const selectCategory = (category) => {
     router.get(
         route("products.index"),
         {
+            search: search.value,
             category: category === "All" ? null : category,
         },
         {
@@ -27,6 +42,8 @@ const selectCategory = (category) => {
         },
     );
 };
+
+
 
 const addToCart = (productId) => {
     router.post(route('carts.store'), {
@@ -50,6 +67,20 @@ const addToCart = (productId) => {
                 </h1>
             </div>
 
+
+
+            <!-- Search Filter -->
+            <div class="mb-6 flex w-full gap-3">
+                <input v-model="search" @keyup.enter="searchProducts" type="text" placeholder="Search books..."
+                    class="w-10/12 rounded-lg border border-gray-300 px-4 py-2  focus:outline-none focus:border-[#B08D57] focus:ring-2 focus:ring-[#B08D57]" />
+
+                <button @click="searchProducts" class="w-2/12 rounded-lg bg-[#1B1B1F] px-4 py-2 text-white">
+                    Search
+                </button>
+            </div>
+
+
+
             <!-- Category filter -->
             <div class="mb-8 flex flex-wrap gap-2">
                 <!-- All category -->
@@ -61,6 +92,8 @@ const addToCart = (productId) => {
                     All
                 </button>
 
+
+
                 <!-- Database categories -->
                 <button v-for="cat in categories" :key="cat.id" @click="selectCategory(cat.slug)"
                     class="rounded-full border px-4 py-2 text-sm font-medium transition" :class="filters.category === cat.slug
@@ -71,10 +104,14 @@ const addToCart = (productId) => {
                 </button>
             </div>
 
+
+
             <!-- Product count -->
             <p class="mb-6 text-sm text-[#1B1B1F]/60">
                 Showing {{ products.data.length }} of {{ products.total }} book{{ products.total === 1 ? '' : 's' }}
             </p>
+
+
 
             <!-- Product grid -->
             <div v-if="products.data.length" class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
@@ -108,10 +145,14 @@ const addToCart = (productId) => {
                 </article>
             </div>
 
+
+
             <!-- Empty state -->
             <p v-else class="py-16 text-center text-sm text-[#1B1B1F]/60">
                 No books in this category yet.
             </p>
+
+
 
             <!-- Pagination -->
             <div v-if="products.links && products.links.length > 3" class="mt-10 flex flex-wrap justify-center gap-2">

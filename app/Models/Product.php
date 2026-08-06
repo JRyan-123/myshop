@@ -39,7 +39,7 @@ class Product extends Model
             return $query;
         }
 
-        return $query->where('name', 'like', "%{$search}%");
+        return $query->where('title', 'like', "%{$search}%");
     }
 
     public function scopeCategory($query, $category)
@@ -51,15 +51,5 @@ class Product extends Model
                 fn($query) => $query->where('slug', $category)
             )
         );
-    }
-
-    public function scopeSort($query, $sort)
-    {
-        return match ($sort) {
-            'price_asc'  => $query->orderBy('price'),
-            'price_desc' => $query->orderByDesc('price'),
-            'newest'     => $query->latest(),
-            default      => $query->orderBy('title'),
-        };
     }
 }
