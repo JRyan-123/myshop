@@ -46,7 +46,7 @@ onUnmounted(() => {
 
             <template v-if="user">
                 <div class="hidden items-center gap-4 md:flex">
-                    <Link :href="route('login')" class="text-sm font-medium hover:text-[#B08D57]">
+                    <Link :href="route('carts.index')" class="text-sm font-medium hover:text-[#B08D57]">
                         <ShoppingCart />
                     </Link>
                     <Link :href="route('login')" class="text-sm font-medium hover:text-[#B08D57]">
