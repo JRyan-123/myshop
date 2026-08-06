@@ -1,5 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue'
+import AppLayout from "@/Layouts/AppLayout.vue";
+
+defineOptions({
+    layout: AppLayout,
+});
 
 // In your real app this would come from a Pinia cart store or an Inertia prop.
 const items = ref([

@@ -11,6 +11,7 @@ const props = defineProps({
     categories: Array,
     filters: Object,
 });
+
 console.log(props.products)
 
 
@@ -26,6 +27,13 @@ const selectCategory = (category) => {
         },
     );
 };
+
+const addToCart = (productId) => {
+    router.post(route('carts.store'), {
+        product_id: productId,
+        quantity: 1,
+    })
+}
 </script>
 
 <template>
@@ -91,7 +99,7 @@ const selectCategory = (category) => {
                         <div class="mt-2 flex items-center justify-between">
                             <span class="font-medium"> ${{ book.price }} </span>
 
-                            <button
+                            <button @click="addToCart(book.id)"
                                 class="rounded-full border border-[#1B1B1F]/20 px-3 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">
                                 Add to cart
                             </button>
