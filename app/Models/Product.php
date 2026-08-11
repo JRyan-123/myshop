@@ -39,7 +39,10 @@ class Product extends Model
             return $query;
         }
 
-        return $query->where('title', 'like', "%{$search}%");
+        return $query->where(function ($query) use ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('author', 'like', "%{$search}%");
+        });
     }
 
     public function scopeCategory($query, $category)
