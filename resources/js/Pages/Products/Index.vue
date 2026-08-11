@@ -1,5 +1,5 @@
 <script setup>
-import { router } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { ref } from "vue";
 
@@ -118,10 +118,21 @@ const addToCart = (productId) => {
                 <article v-for="book in products.data" :key="book.id" class="group flex flex-col">
 
                     <!-- Book cover -->
-                    <a href="#"
-                        class="relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition group-hover:shadow-lg">
-                        <img :src="`/${book.image_path}`" :alt="book.title" class="h-full w-full object-cover" />
-                    </a>
+                    <Link :href="route('products.show', book.id)"
+                        class="group relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition hover:shadow-lg">
+                        <!-- Book cover -->
+                        <img :src="`/${book.image_path}`" :alt="book.title"
+                            class="h-full w-full object-cover transition group-hover:scale-105" />
+
+                        <!-- Dark overlay -->
+                        <div class="absolute inset-0 bg-black/40"></div>
+
+                        <!-- Title -->
+                        <span
+                            class="absolute inset-0 flex items-center justify-center p-3 text-center font-serif text-sm font-semibold leading-snug text-white">
+                            {{ book.title }}
+                        </span>
+                    </Link>
 
                     <!-- Book information -->
                     <div class="mt-3">
