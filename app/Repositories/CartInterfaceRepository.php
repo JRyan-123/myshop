@@ -1,14 +1,15 @@
 <?php
-
 namespace App\Repositories;
 
-class CartInterfaceRepository
+use App\Interfaces\CartInterface;
+use App\Models\Cart;
+
+class CartInterfaceRepository implements CartInterface
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
+    public function getCart(int $userId)
     {
-        //
+        return Cart::with('cartItems.product')
+            ->where('user_id', $userId)
+            ->first();
     }
 }
