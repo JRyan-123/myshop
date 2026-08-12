@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Resources\CartResource;
 use App\Repositories\CartInterfaceRepository;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -15,6 +15,11 @@ class CartController extends Controller
     ){}
 
 
+    /**
+     * get users cart
+     *
+     * @return void
+     */
     public function index()
     {
         $cart = $this->cart_repository->getCart(auth()->id());
@@ -22,7 +27,7 @@ class CartController extends Controller
         return Inertia::render('Cart/Index', [
             'cart' => CartResource::make($cart),
         ]);
-
-
     }
+
+
 }

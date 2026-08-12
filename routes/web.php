@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\ProductController as CustomerProductController;
 use App\Http\Controllers\OrderController as CustomerOrderController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentWebhookController;
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/orders', CustomerOrderController::class);
     Route::resource('/carts', CartController::class);
+    Route::resource('/cart-items', CartItemController::class);
     Route::resource('/checkouts', CheckoutController::class);
     Route::resource('/payments', PaymentWebhookController::class);
 

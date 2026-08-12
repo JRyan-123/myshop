@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 defineOptions({
@@ -10,34 +11,49 @@ const props = defineProps({
 });
 
 console.log(props.cart.data.cartItems[0]);
-// In your real app this would come from a Pinia cart store or an Inertia prop.
-const items = ref([
-    { id: 1, title: 'The Long Tide', author: 'Marta Ilves', price: 14.99, qty: 1, color: 'bg-[#5B7B6E]' },
-    { id: 2, title: 'Paper Moons', author: 'D. R. Achebe', price: 12.5, qty: 2, color: 'bg-[#B08D57]' },
-    { id: 3, title: 'Marrow & Ink', author: 'Colm Faraday', price: 16.0, qty: 1, color: 'bg-[#8C3B3B]' },
-    { id: 4, title: 'Marrow & Ink', author: 'Colm Faraday', price: 16.0, qty: 1, color: 'bg-[#8C3B3B]' },
-    { id: 5, title: 'Marrow & Ink', author: 'Colm Faraday', price: 16.0, qty: 1, color: 'bg-[#8C3B3B]' },
-    { id: 6, title: 'Marrow & Ink', author: 'Colm Faraday', price: 16.0, qty: 1, color: 'bg-[#8C3B3B]' },
-    { id: 7, title: 'Marrow & Ink', author: 'Colm Faraday', price: 16.0, qty: 1, color: 'bg-[#8C3B3B]' },
-    { id: 8, title: 'Marrow & Ink', author: 'Colm Faraday', price: 16.0, qty: 1, color: 'bg-[#8C3B3B]' },
-])
 
-function increment(item) {
-    item.qty++
+const increaseQty = (item) => {
+    router.patch(
+        route('cart-items.update', item.id),
+        {
+            quantity: item.quantity + 1
+        }
+    )
+}
+const decrementQty = (item) => {
+    if (item.quantity > 1) {
+        router.patch(
+            route('cart-items.update', item.id),
+            {
+                'quantity': item.quantity - 1
+            }
+        )
+    }
 }
 
-function decrement(item) {
-    if (item.qty > 1) item.qty--
-}
-
-function removeItem(id) {
-    items.value = items.value.filter((i) => i.id !== id)
+const removeItem = (item) => {
+    router.delete(
+        route('cart-items.destroy', {
+            cart_item: item.id,
+        })
+    )
 }
 
 const subtotal = computed(() =>
-    items.value.reduce((sum, i) => sum + i.price * i.qty, 0)
+    props.cart.data.cartItems.reduce(
+        (sum, item) => sum + (Number(item.price) * item.quantity),
+        0
+    )
 )
-const shipping = computed(() => (items.value.length ? 4.0 : 0))
+
+const shipping = computed(() => {
+    const itemCount = props.cart.data.cartItems.length;
+
+    if (itemCount === 0) return 0
+
+    return 25 + (itemCount * 5)
+})
+
 const total = computed(() => subtotal.value + shipping.value)
 </script>
 
@@ -75,7 +91,7 @@ const total = computed(() => subtotal.value + shipping.value)
                                     <h3 class="font-serif text-base font-semibold">{{ item.title }}</h3>
                                     <p class="text-sm text-[#1B1B1F]/60">{{ item.author }}</p>
                                 </div>
-                                <button @click="removeItem(item.id)"
+                                <button @click="removeItem(item)"
                                     class="text-sm text-[#1B1B1F]/40 transition hover:text-[#8C3B3B]"
                                     aria-label="Remove item">
                                     Remove
@@ -84,19 +100,19 @@ const total = computed(() => subtotal.value + shipping.value)
 
                             <div class="mt-4 flex items-center justify-between">
                                 <div class="flex items-center gap-3 rounded-full border border-[#1B1B1F]/20 px-2 py-1">
-                                    <button @click="decrement(item)"
+                                    <button @click="decrementQty(item)"
                                         class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
                                         aria-label="Decrease quantity">
                                         −
                                     </button>
                                     <span class="w-4 text-center text-sm">{{ item.quantity }}</span>
-                                    <button @click="increment(item)"
+                                    <button @click="increaseQty(item)"
                                         class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
                                         aria-label="Increase quantity">
                                         +
                                     </button>
                                 </div>
-                                <span class="font-medium">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                                <span class="font-medium">₱{{ (item.price * item.quantity).toFixed(2) }}</span>
                             </div>
                         </div>
                     </li>
@@ -109,15 +125,15 @@ const total = computed(() => subtotal.value + shipping.value)
                     <dl class="mt-4 space-y-3 text-sm">
                         <div class="flex justify-between">
                             <dt class="text-[#1B1B1F]/60">Subtotal</dt>
-                            <dd>${{ subtotal.toFixed(2) }}</dd>
+                            <dd>₱{{ subtotal.toFixed(2) }}</dd>
                         </div>
                         <div class="flex justify-between">
                             <dt class="text-[#1B1B1F]/60">Shipping</dt>
-                            <dd>${{ shipping.toFixed(2) }}</dd>
+                            <dd>₱{{ shipping.toFixed(2) }}</dd>
                         </div>
                         <div class="flex justify-between border-t border-black/10 pt-3 text-base font-semibold">
                             <dt>Total</dt>
-                            <dd>${{ total.toFixed(2) }}</dd>
+                            <dd>₱{{ total.toFixed(2) }}</dd>
                         </div>
                     </dl>
 
