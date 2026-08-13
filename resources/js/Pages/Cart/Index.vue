@@ -29,6 +29,9 @@ const decrementQty = (item) => {
             }
         )
     }
+    else {
+        removeItem(item)
+    }
 }
 
 const removeItem = (item) => {
