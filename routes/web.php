@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/orders', CustomerOrderController::class);
     Route::resource('/carts', CartController::class);
     Route::resource('/cart-items', CartItemController::class);
-    Route::resource('/checkouts', CheckoutController::class);
+    Route::resource('/checkout', CheckoutController::class);
     Route::resource('/payments', PaymentWebhookController::class);
 
 });

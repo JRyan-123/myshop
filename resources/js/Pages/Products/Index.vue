@@ -15,6 +15,11 @@ const props = defineProps({
 
 const search = ref(props.filters.search ?? "");
 
+const routerOptions = {
+    preserveState: true,
+    preserveScroll: true,
+}
+
 const searchProducts = () => {
     router.get(
         route("products.index"),
@@ -23,8 +28,7 @@ const searchProducts = () => {
             category: props.filters.category,
         },
         {
-            preserveState: true,
-            preserveScroll: true,
+            routerOptions
         }
     );
 };
@@ -37,8 +41,7 @@ const selectCategory = (category) => {
             category: category === "All" ? null : category,
         },
         {
-            preserveState: true,
-            preserveScroll: true,
+            routerOptions
         },
     );
 };
@@ -49,7 +52,11 @@ const addToCart = (productId) => {
     router.post(route('carts.store'), {
         product_id: productId,
         quantity: 1,
-    })
+    },
+        {
+            routerOptions
+        },
+    )
 }
 </script>
 

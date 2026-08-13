@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { router } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 defineOptions({
@@ -139,10 +139,12 @@ const total = computed(() => subtotal.value + shipping.value)
                         </div>
                     </dl>
 
-                    <button
-                        class="mt-6 w-full rounded-full bg-[#1B1B1F] py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
-                        Checkout
-                    </button>
+
+                    <Link :href="route('checkout.index')"
+                        class="flex w-full items-center justify-center bg-[#1B1B1F] mt-5 py-3 rounded-full text-[#F7F2E7] text-sm font-medium hover:bg-[#B08D57]">
+                        Proceed to Checkout
+                    </Link>
+
                     <a href="/books"
                         class="mt-3 block text-center text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
                         Continue shopping
