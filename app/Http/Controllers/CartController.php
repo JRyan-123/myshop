@@ -27,7 +27,7 @@ class CartController extends Controller
         $cart = $this->cart_repository->getCart(auth()->id());
 
         return Inertia::render('Cart/Index', [
-            'cart' => CartResource::make($cart),
+            'cart' => $cart ? CartResource::make($cart) : null,
         ]);
     }
 

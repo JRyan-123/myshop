@@ -10,7 +10,6 @@ const props = defineProps({
     cart: Object,
 });
 
-console.log(props.cart.data.cartItems[0]);
 
 const increaseQty = (item) => {
     router.patch(
@@ -70,7 +69,7 @@ const total = computed(() => subtotal.value + shipping.value)
                 <h1 class="mt-2 font-serif text-3xl font-semibold sm:text-4xl">Cart</h1>
             </div>
 
-            <div v-if="props.cart.data.cartItems.length" class="grid gap-10 lg:grid-cols-3">
+            <div v-if="props.cart && props.cart.data.cartItems.length" class="grid gap-10 lg:grid-cols-3">
                 <!-- Cart items -->
                 <ul class="divide-y divide-black/10 lg:col-span-2">
                     <li v-for="item in props.cart.data.cartItems" :key="item.id" class="flex gap-4 py-6 first:pt-0">
