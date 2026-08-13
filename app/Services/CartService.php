@@ -14,7 +14,7 @@ class CartService
     ) {}
 
     /**
-     * handles create cart and add item to cart
+     * handles cart and adding of item
      *
      * @param integer $userId
      * @param integer $productId

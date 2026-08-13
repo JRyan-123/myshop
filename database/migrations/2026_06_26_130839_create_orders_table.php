@@ -26,6 +26,8 @@ return new class extends Migration
             ])->default('pending');
             $table->decimal('subtotal', 10, 2);
             $table->decimal('total', 10, 2);
+            $table->string('shipping_name');
+            $table->string('shipping_phone');
             $table->json('shipping_address');
             $table->decimal('shipping_fee', 10, 2)->default(0);
             $table->timestamps();

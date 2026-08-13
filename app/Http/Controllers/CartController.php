@@ -32,7 +32,7 @@ class CartController extends Controller
     }
 
     /**
-     * saving product to cart, cart item model
+     * saving product to cart and cart item model
      *
      * @param AddToCartRequest $request
      * @return void
