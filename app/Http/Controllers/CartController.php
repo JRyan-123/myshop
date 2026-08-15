@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddToCartRequest;
 use App\Http\Resources\CartResource;
-use App\Repositories\CartInterfaceRepository;
+use App\Interfaces\CartInterface;
 use App\Services\CartService;
 use Inertia\Inertia;
 
@@ -12,7 +12,7 @@ class CartController extends Controller
 {
 
     public function __construct(
-        protected CartInterfaceRepository $cart_repository,
+        protected CartInterface $cart_interface,
         protected CartService $cart_service
     ){}
 
@@ -24,7 +24,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $cart = $this->cart_repository->getCart(auth()->id());
+        $cart = $this->cart_interface->getCart(auth()->id());
 
         return Inertia::render('Cart/Index', [
             'cart' => $cart ? CartResource::make($cart) : null,

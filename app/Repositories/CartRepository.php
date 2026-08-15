@@ -4,7 +4,7 @@ namespace App\Repositories;
 use App\Interfaces\CartInterface;
 use App\Models\Cart;
 
-class CartInterfaceRepository implements CartInterface
+class CartRepository implements CartInterface
 {
     /**
      * fetch cart items
