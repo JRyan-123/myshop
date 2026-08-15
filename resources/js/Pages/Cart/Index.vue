@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue'
 import { Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import OrderSummary from '@/Components/Cart/OrderSummary.vue';
+import { useOrderSummary } from '@/Composables/OrderSummary';
 
 defineOptions({
     layout: AppLayout,
@@ -10,7 +12,9 @@ const props = defineProps({
     cart: Object,
 });
 
-
+const cartItems = computed(() =>
+    props.cart?.data?.cartItems ?? []
+)
 const increaseQty = (item) => {
     router.patch(
         route('cart-items.update', item.id),
@@ -41,22 +45,9 @@ const removeItem = (item) => {
     )
 }
 
-const subtotal = computed(() =>
-    props.cart.data.cartItems.reduce(
-        (sum, item) => sum + (Number(item.price) * item.quantity),
-        0
-    )
-)
+const { subtotal, shipping, total } = useOrderSummary(cartItems);
 
-const shipping = computed(() => {
-    const itemCount = props.cart.data.cartItems.length;
-
-    if (itemCount === 0) return 0
-
-    return 25 + (itemCount * 5)
-})
-
-const total = computed(() => subtotal.value + shipping.value)
+console.log(subtotal);
 </script>
 
 <template>
@@ -69,10 +60,10 @@ const total = computed(() => subtotal.value + shipping.value)
                 <h1 class="mt-2 font-serif text-3xl font-semibold sm:text-4xl">Cart</h1>
             </div>
 
-            <div v-if="props.cart && props.cart.data.cartItems.length" class="grid gap-10 lg:grid-cols-3">
+            <div v-if="cartItems.length" class="grid gap-10 lg:grid-cols-3">
                 <!-- Cart items -->
                 <ul class="divide-y divide-black/10 lg:col-span-2">
-                    <li v-for="item in props.cart.data.cartItems" :key="item.id" class="flex gap-4 py-6 first:pt-0">
+                    <li v-for="item in cartItems" :key="item.id" class="flex gap-4 py-6 first:pt-0">
                         <div class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
                             <img :src="`/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
                                 alt="" />
@@ -121,25 +112,7 @@ const total = computed(() => subtotal.value + shipping.value)
                 </ul>
 
                 <!-- Order summary -->
-                <aside class="h-fit rounded-2xl border border-black/10 bg-white/50 p-6">
-                    <h2 class="font-serif text-lg font-semibold">Order summary</h2>
-
-                    <dl class="mt-4 space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <dt class="text-[#1B1B1F]/60">Subtotal</dt>
-                            <dd>₱{{ subtotal.toFixed(2) }}</dd>
-                        </div>
-                        <div class="flex justify-between">
-                            <dt class="text-[#1B1B1F]/60">Shipping</dt>
-                            <dd>₱{{ shipping.toFixed(2) }}</dd>
-                        </div>
-                        <div class="flex justify-between border-t border-black/10 pt-3 text-base font-semibold">
-                            <dt>Total</dt>
-                            <dd>₱{{ total.toFixed(2) }}</dd>
-                        </div>
-                    </dl>
-
-
+                <OrderSummary :subtotal="subtotal" :shipping="shipping" :total="total">
                     <Link :href="route('checkout.index')"
                         class="flex w-full items-center justify-center bg-[#1B1B1F] mt-5 py-3 rounded-full text-[#F7F2E7] text-sm font-medium hover:bg-[#B08D57]">
                         Proceed to Checkout
@@ -149,7 +122,7 @@ const total = computed(() => subtotal.value + shipping.value)
                         class="mt-3 block text-center text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
                         Continue shopping
                     </a>
-                </aside>
+                </OrderSummary>
             </div>
 
             <!-- Empty state -->
