@@ -1,181 +1,119 @@
 <script setup>
+import OrderSummary from '@/Components/Cart/OrderSummary.vue'
+import { formatPrice } from '@/utils/FormatPrice'
 import { ref, computed } from 'vue'
 
-// Order summary data — in your real app this comes from the cart store / an Inertia prop.
-const items = ref([
-  { id: 1, title: 'The Long Tide', price: 14.99, qty: 1, color: 'bg-[#5B7B6E]' },
-  { id: 2, title: 'Paper Moons', price: 12.5, qty: 2, color: 'bg-[#B08D57]' },
-  { id: 3, title: 'Marrow & Ink', price: 16.0, qty: 1, color: 'bg-[#8C3B3B]' },
-])
+const props  = defineProps({
+    cart: Object,
+    summary: Object
+})
+console.log(props.summary)
+const cartItems = computed(() =>
+    props.cart?.data?.cartItems ?? []
+)
 
-const subtotal = computed(() => items.value.reduce((sum, i) => sum + i.price * i.qty, 0))
-const shipping = computed(() => 4.0)
-const total = computed(() => subtotal.value + shipping.value)
 
-// Form state
+
+
+// Shipping information
 const form = ref({
-  name: '',
-  email: '',
-  phone: '',
-  address: '',
-  city: '',
-  zip: '',
+    name: '',
+    phone: '',
+    address: '',
 })
 
 const paymentMethods = [
-  { id: 'gcash', label: 'GCash', hint: 'Pay via GCash e-wallet' },
-  { id: 'card', label: 'Card', hint: 'Visa, Mastercard, JCB' },
-  { id: 'ewallet', label: 'E-Wallet', hint: 'GrabPay, Maya, and more' },
+    { id: 'gcash', label: 'GCash', color: 'bg-[#0072CE]', initials: 'GC' },
+    { id: 'paymaya', label: 'PayMaya', color: 'bg-[#2CB34A]', initials: 'PM' },
+    { id: 'cod', label: 'Cash on Delivery', color: 'bg-[#B08D57]', initials: '₱' },
 ]
 const selectedPayment = ref('gcash')
 
 function submitOrder() {
-  // Hand off to your Laravel controller, e.g. via Inertia's router.post('/checkout', form.value)
-  console.log('placing order', { form: form.value, payment: selectedPayment.value })
+    // Hand off to your Laravel controller, e.g. via Inertia's router.post('/checkout', form.value)
+    console.log('placing order', { form: form.value, payment: selectedPayment.value })
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
-    <section class="mx-auto max-w-6xl px-6 py-12">
-      <div class="mb-8">
-        <p class="text-sm font-medium uppercase tracking-widest text-[#B08D57]">
-          Almost there
-        </p>
-        <h1 class="mt-2 font-serif text-3xl font-semibold sm:text-4xl">Checkout</h1>
-      </div>
-
-      <form @submit.prevent="submitOrder" class="grid gap-10 lg:grid-cols-3">
-        <!-- Left: forms -->
-        <div class="space-y-8 lg:col-span-2">
-          <!-- Contact info -->
-          <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
-            <h2 class="font-serif text-lg font-semibold">Contact information</h2>
-            <div class="mt-4 grid gap-4 sm:grid-cols-2">
-              <input
-                v-model="form.name"
-                type="text"
-                placeholder="Full name"
-                required
-                class="rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]"
-              />
-              <input
-                v-model="form.phone"
-                type="tel"
-                placeholder="Phone number"
-                required
-                class="rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]"
-              />
-              <input
-                v-model="form.email"
-                type="email"
-                placeholder="Email address"
-                required
-                class="rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57] sm:col-span-2"
-              />
+    <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
+        <section class="mx-auto max-w-6xl px-6 py-12">
+            <div class="mb-8">
+                <p class="text-sm font-medium uppercase tracking-widest text-[#B08D57]">
+                    Almost there
+                </p>
+                <h1 class="mt-2 font-serif text-3xl font-semibold sm:text-4xl">Checkout</h1>
             </div>
-          </div>
 
-          <!-- Shipping address -->
-          <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
-            <h2 class="font-serif text-lg font-semibold">Shipping address</h2>
-            <div class="mt-4 grid gap-4 sm:grid-cols-2">
-              <input
-                v-model="form.address"
-                type="text"
-                placeholder="Street address"
-                required
-                class="rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57] sm:col-span-2"
-              />
-              <input
-                v-model="form.city"
-                type="text"
-                placeholder="City"
-                required
-                class="rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]"
-              />
-              <input
-                v-model="form.zip"
-                type="text"
-                placeholder="ZIP code"
-                required
-                class="rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]"
-              />
-            </div>
-          </div>
+            <form @submit.prevent="submitOrder" class="grid gap-10 lg:grid-cols-3">
+                <!-- Left: shipping + payment -->
+                <div class="space-y-6 lg:col-span-2">
+                    <!-- Shipping information -->
+                    <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
+                        <h2 class="font-serif text-lg font-semibold">Shipping information</h2>
+                        <div class="mt-4 space-y-4">
+                            <input v-model="form.name" type="text" placeholder="Name" required
+                                class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
+                            <input v-model="form.phone" type="tel" placeholder="Phone" required
+                                class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
+                            <input v-model="form.house_number" type="text" placeholder="House No. / Street" required
+                                class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
 
-          <!-- Payment method -->
-          <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
-            <h2 class="font-serif text-lg font-semibold">Payment method</h2>
-            <div class="mt-4 grid gap-3 sm:grid-cols-3">
-              <label
-                v-for="method in paymentMethods"
-                :key="method.id"
-                class="cursor-pointer rounded-xl border p-4 text-sm transition"
-                :class="
-                  selectedPayment === method.id
-                    ? 'border-[#1B1B1F] bg-[#1B1B1F] text-[#F7F2E7]'
-                    : 'border-black/10 bg-white hover:border-[#B08D57]'
-                "
-              >
-                <input
-                  v-model="selectedPayment"
-                  type="radio"
-                  name="payment"
-                  :value="method.id"
-                  class="sr-only"
-                />
-                <span class="block font-medium">{{ method.label }}</span>
-                <span class="mt-1 block text-xs opacity-70">{{ method.hint }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
+                            <input v-model="form.barangay" type="text" placeholder="Barangay" required
+                                class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
 
-        <!-- Right: order summary -->
-        <aside class="h-fit rounded-2xl border border-black/10 bg-white/50 p-6">
-          <h2 class="font-serif text-lg font-semibold">Order summary</h2>
+                            <input v-model="form.city" type="text" placeholder="City / Municipality" required
+                                class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
+                        </div>
+                    </div>
 
-          <ul class="mt-4 space-y-4">
-            <li v-for="item in items" :key="item.id" class="flex items-center gap-3">
-              <div :class="item.color" class="flex h-14 w-10 shrink-0 items-center justify-center rounded-md">
-                <span class="text-center font-serif text-[9px] font-semibold leading-snug text-white">
-                  {{ item.title }}
-                </span>
-              </div>
-              <div class="flex flex-1 items-center justify-between text-sm">
-                <div>
-                  <p class="font-medium">{{ item.title }}</p>
-                  <p class="text-[#1B1B1F]/60">Qty {{ item.qty }}</p>
+                    <!-- Payment method -->
+                    <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
+                        <h2 class="font-serif text-lg font-semibold">Payment method</h2>
+                        <div class="mt-4 grid grid-cols-3 gap-3">
+                            <label v-for="method in paymentMethods" :key="method.id"
+                                class="relative flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 bg-white p-4 text-center transition"
+                                :class="selectedPayment === method.id
+                                        ? 'border-[#1B1B1F]'
+                                        : 'border-black/10 hover:border-[#B08D57]'
+                                    ">
+                                <input v-model="selectedPayment" type="radio" name="payment" :value="method.id"
+                                    class="sr-only" />
+                                <span v-if="selectedPayment === method.id"
+                                    class="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#1B1B1F] text-[10px] text-white">
+                                    ✓
+                                </span>
+                                <span :class="method.color"
+                                    class="flex h-12 w-12 items-center justify-center rounded-full text-sm font-semibold text-white">
+                                    {{ method.initials }}
+                                </span>
+                                <span class="text-xs font-medium leading-tight">{{ method.label }}</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <span>${{ (item.price * item.qty).toFixed(2) }}</span>
-              </div>
-            </li>
-          </ul>
 
-          <dl class="mt-6 space-y-3 border-t border-black/10 pt-4 text-sm">
-            <div class="flex justify-between">
-              <dt class="text-[#1B1B1F]/60">Subtotal</dt>
-              <dd>${{ subtotal.toFixed(2) }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-[#1B1B1F]/60">Shipping</dt>
-              <dd>${{ shipping.toFixed(2) }}</dd>
-            </div>
-            <div class="flex justify-between border-t border-black/10 pt-3 text-base font-semibold">
-              <dt>Total</dt>
-              <dd>${{ total.toFixed(2) }}</dd>
-            </div>
-          </dl>
+                <!-- Right: order summary -->
+                <OrderSummary :subtotal="props.summary?.subtotal" :shipping_fee="props.summary?.shipping_fee" :total="props.summary?.total">
+                    <template #forDetails>
+                        <ul class="mt-5 space-y-2 text-sm border-b border-black/10 ">
+                            <li v-for="item in cartItems" :key="item.id" class="flex justify-between pt-3">
+                                <span>{{ item.quantity }} x {{ item.title }}</span>
+                                <span>{{ formatPrice(item.price * item.quantity) }}</span>
 
-          <button
-            type="submit"
-            class="mt-6 w-full rounded-full bg-[#1B1B1F] py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]"
-          >
-            Place order
-          </button>
-        </aside>
-      </form>
-    </section>
-  </div>
+                            </li>
+                        </ul>
+                    </template>
+
+                    <template #forButtons>
+                        <button type="submit"
+                            class="mt-6 w-full rounded-full bg-[#1B1B1F] py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
+                            Place Order
+                        </button>
+                    </template>
+
+                </OrderSummary>
+            </form>
+        </section>
+    </div>
 </template>

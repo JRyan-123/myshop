@@ -3,13 +3,14 @@ import { ref, computed } from 'vue'
 import { Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import OrderSummary from '@/Components/Cart/OrderSummary.vue';
-import { useOrderSummary } from '@/Composables/OrderSummary';
+
 
 defineOptions({
     layout: AppLayout,
 });
 const props = defineProps({
     cart: Object,
+    summary: Object,
 });
 
 const cartItems = computed(() =>
@@ -45,9 +46,7 @@ const removeItem = (item) => {
     )
 }
 
-const { subtotal, shipping, total } = useOrderSummary(cartItems);
 
-console.log(subtotal);
 </script>
 
 <template>
@@ -112,16 +111,20 @@ console.log(subtotal);
                 </ul>
 
                 <!-- Order summary -->
-                <OrderSummary :subtotal="subtotal" :shipping="shipping" :total="total">
-                    <Link :href="route('checkout.index')"
-                        class="flex w-full items-center justify-center bg-[#1B1B1F] mt-5 py-3 rounded-full text-[#F7F2E7] text-sm font-medium hover:bg-[#B08D57]">
-                        Proceed to Checkout
-                    </Link>
+                <OrderSummary :subtotal="props.summary?.subtotal" :shipping_fee="props.summary?.shipping_fee" :total="props.summary?.total">
+                    <template #forButtons>
+                        <Link :href="route('checkout.index')"
+                            class="flex w-full items-center justify-center bg-[#1B1B1F] mt-5 py-3 rounded-full text-[#F7F2E7] text-sm font-medium hover:bg-[#B08D57]">
+                            Proceed to Checkout
+                        </Link>
 
-                    <a href="/books"
-                        class="mt-3 block text-center text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
-                        Continue shopping
-                    </a>
+                        <Link :href="route('products.index')"
+                            class="mt-5 block text-center text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
+                            Continue shopping
+                        </Link>
+
+                    </template>
+
                 </OrderSummary>
             </div>
 

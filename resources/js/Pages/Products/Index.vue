@@ -27,9 +27,8 @@ const searchProducts = () => {
             search: search.value,
             category: props.filters.category,
         },
-        {
-            routerOptions
-        }
+        routerOptions
+
     );
 };
 
@@ -40,9 +39,7 @@ const selectCategory = (category) => {
             search: search.value,
             category: category === "All" ? null : category,
         },
-        {
-            routerOptions
-        },
+        routerOptions
     );
 };
 
@@ -52,10 +49,8 @@ const addToCart = (productId) => {
     router.post(route('carts.store'), {
         product_id: productId,
         quantity: 1,
-    },
-        {
-            routerOptions
         },
+        routerOptions
     )
 }
 </script>

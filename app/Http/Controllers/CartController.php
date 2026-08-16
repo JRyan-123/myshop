@@ -6,14 +6,15 @@ use App\Http\Requests\AddToCartRequest;
 use App\Http\Resources\CartResource;
 use App\Interfaces\CartInterface;
 use App\Services\CartService;
+use App\Services\OrderService;
 use Inertia\Inertia;
 
 class CartController extends Controller
 {
 
     public function __construct(
-        protected CartInterface $cart_interface,
-        protected CartService $cart_service
+        protected CartService $cart_service,
+        protected OrderService $order_service
     ){}
 
 
@@ -24,10 +25,14 @@ class CartController extends Controller
      */
     public function index()
     {
-        $cart = $this->cart_interface->getCart(auth()->id());
+        $data = $this->order_service->OrderSummary(auth()->id());
+
+        $cart = $data['cart'];
+        $summary = $data['summary'];
 
         return Inertia::render('Cart/Index', [
             'cart' => $cart ? CartResource::make($cart) : null,
+            'summary' => $summary
         ]);
     }
 

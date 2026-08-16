@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Interfaces\CartInterface;
+use App\Interfaces\OrderInterface;
 use App\Repositories\CartRepository;
+use App\Repositories\OrderRepository;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CartInterface::class,
             CartRepository::class
+        );
+
+        $this->app->bind(
+            OrderInterface::class,
+            OrderRepository::class
         );
     }
 
