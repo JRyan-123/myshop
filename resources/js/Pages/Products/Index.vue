@@ -1,5 +1,5 @@
 <script setup>
-import { Link, router } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { ref } from "vue";
 
@@ -56,6 +56,8 @@ const addToCart = (productId) => {
 </script>
 
 <template>
+    <Head title="Products" />
+
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
         <section class="mx-auto max-w-6xl px-6 py-12">
             <!-- Page header -->

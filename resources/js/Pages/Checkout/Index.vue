@@ -1,9 +1,10 @@
 <script setup>
 import OrderSummary from '@/Components/Cart/OrderSummary.vue'
 import { formatPrice } from '@/utils/FormatPrice'
+import { Head } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
 
-const props  = defineProps({
+const props = defineProps({
     cart: Object,
     summary: Object
 })
@@ -36,6 +37,9 @@ function submitOrder() {
 </script>
 
 <template>
+
+    <Head title="Checkout" />
+
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
         <section class="mx-auto max-w-6xl px-6 py-12">
             <div class="mb-8">
@@ -74,8 +78,8 @@ function submitOrder() {
                             <label v-for="method in paymentMethods" :key="method.id"
                                 class="relative flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 bg-white p-4 text-center transition"
                                 :class="selectedPayment === method.id
-                                        ? 'border-[#1B1B1F]'
-                                        : 'border-black/10 hover:border-[#B08D57]'
+                                    ? 'border-[#1B1B1F]'
+                                    : 'border-black/10 hover:border-[#B08D57]'
                                     ">
                                 <input v-model="selectedPayment" type="radio" name="payment" :value="method.id"
                                     class="sr-only" />
@@ -94,7 +98,8 @@ function submitOrder() {
                 </div>
 
                 <!-- Right: order summary -->
-                <OrderSummary :subtotal="props.summary?.subtotal" :shipping_fee="props.summary?.shipping_fee" :total="props.summary?.total">
+                <OrderSummary :subtotal="props.summary?.subtotal" :shipping_fee="props.summary?.shipping_fee"
+                    :total="props.summary?.total">
                     <template #forDetails>
                         <ul class="mt-5 space-y-2 text-sm border-b border-black/10 ">
                             <li v-for="item in cartItems" :key="item.id" class="flex justify-between pt-3">

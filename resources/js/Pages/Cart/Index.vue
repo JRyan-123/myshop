@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Link, router } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import OrderSummary from '@/Components/Cart/OrderSummary.vue';
 
@@ -50,6 +50,8 @@ const removeItem = (item) => {
 </script>
 
 <template>
+    <Head title="Cart" />
+
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
         <section class="mx-auto max-w-6xl px-6 py-12">
             <div class="mb-8">
