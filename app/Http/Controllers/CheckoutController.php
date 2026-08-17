@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CartResource;
-use App\Services\OrderService;
+use App\Services\CheckoutService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CheckoutController extends Controller
 {
     public function __construct(
-        protected OrderService $order_service
+        protected CheckoutService $checkout_service
     ) { }
 
     public function index()
     {
-        $data = $this->order_service->OrderSummary(auth()->id());
+        $data = $this->checkout_service->OrderSummary(auth()->id());
 
         $cart = $data['cart'];
         $summary = $data['summary'];

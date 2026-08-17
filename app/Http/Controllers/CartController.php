@@ -6,6 +6,7 @@ use App\Http\Requests\AddToCartRequest;
 use App\Http\Resources\CartResource;
 use App\Interfaces\CartInterface;
 use App\Services\CartService;
+use App\Services\CheckoutService;
 use App\Services\OrderService;
 use Inertia\Inertia;
 
@@ -14,7 +15,7 @@ class CartController extends Controller
 
     public function __construct(
         protected CartService $cart_service,
-        protected OrderService $order_service
+        protected CheckoutService $checkout_service
     ){}
 
 
@@ -25,7 +26,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $data = $this->order_service->OrderSummary(auth()->id());
+        $data = $this->checkout_service->OrderSummary(auth()->id());
 
         $cart = $data['cart'];
         $summary = $data['summary'];

@@ -3,16 +3,17 @@
 namespace App\Services;
 
 use App\Interfaces\CartInterface;
-use App\Interfaces\OrderInterface;
+use App\Interfaces\CheckoutInterface;
 
-class OrderService
+
+class CheckoutService
 {
     /**
      * Create a new class instance.
      */
     public function __construct(
         protected CartInterface $cart_interface,
-        protected OrderInterface $order_interface
+        protected CheckoutInterface $order_interface
     ) {}
 
 

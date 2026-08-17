@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\OrderInterface;
+use App\Interfaces\CheckoutInterface;
 
-class OrderRepository implements OrderInterface
+
+class CheckoutRepository implements CheckoutInterface
 {
     public function calculateSummary($cart)
     {
