@@ -10,4 +10,6 @@ interface OrderInterface
 
     public function createOrderItem(Order $order, array $data);
 
+    public function getOrder(int $userId);
+
 }

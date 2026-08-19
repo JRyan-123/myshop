@@ -32,4 +32,14 @@ class OrderRepository implements OrderInterface
     {
         return $order->orderItems()->create($data);
     }
+
+
+
+    public function getOrder(int $userId)
+    {
+        return Order::with('orderItems')
+            ->where('user_id', $userId)
+            ->latest()
+            ->get();
+    }
 }

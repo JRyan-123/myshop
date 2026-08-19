@@ -1,38 +1,38 @@
 <script setup>
 import OrderSummary from '@/Components/Cart/OrderSummary.vue'
 import { formatPrice } from '@/utils/FormatPrice'
-import { Head } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
 
 const props = defineProps({
     cart: Object,
     summary: Object
 })
-console.log(props.summary)
+
 const cartItems = computed(() =>
     props.cart?.data?.cartItems ?? []
 )
 
 
-
-
-// Shipping information
-const form = ref({
+const form = useForm({
     name: '',
     phone: '',
-    address: '',
+    street: '',
+    barangay: '',
+    city: '',
+
 })
+
 
 const paymentMethods = [
     { id: 'gcash', label: 'GCash', color: 'bg-[#0072CE]', initials: 'GC' },
     { id: 'paymaya', label: 'PayMaya', color: 'bg-[#2CB34A]', initials: 'PM' },
     { id: 'cod', label: 'Cash on Delivery', color: 'bg-[#B08D57]', initials: '₱' },
 ]
-const selectedPayment = ref('gcash')
+
 
 function submitOrder() {
-    // Hand off to your Laravel controller, e.g. via Inertia's router.post('/checkout', form.value)
-    console.log('placing order', { form: form.value, payment: selectedPayment.value })
+    form.post(route('orders.store'))
 }
 </script>
 
@@ -56,11 +56,14 @@ function submitOrder() {
                     <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
                         <h2 class="font-serif text-lg font-semibold">Shipping information</h2>
                         <div class="mt-4 space-y-4">
+
                             <input v-model="form.name" type="text" placeholder="Name" required
                                 class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
+
                             <input v-model="form.phone" type="tel" placeholder="Phone" required
                                 class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
-                            <input v-model="form.house_number" type="text" placeholder="House No. / Street" required
+
+                            <input v-model="form.street" type="text" placeholder="House No. / Street" required
                                 class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
 
                             <input v-model="form.barangay" type="text" placeholder="Barangay" required
@@ -68,6 +71,7 @@ function submitOrder() {
 
                             <input v-model="form.city" type="text" placeholder="City / Municipality" required
                                 class="w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#B08D57]" />
+
                         </div>
                     </div>
 
@@ -77,13 +81,13 @@ function submitOrder() {
                         <div class="mt-4 grid grid-cols-3 gap-3">
                             <label v-for="method in paymentMethods" :key="method.id"
                                 class="relative flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 bg-white p-4 text-center transition"
-                                :class="selectedPayment === method.id
+                                :class="form.selectedPayment === method.id
                                     ? 'border-[#1B1B1F]'
                                     : 'border-black/10 hover:border-[#B08D57]'
                                     ">
-                                <input v-model="selectedPayment" type="radio" name="payment" :value="method.id"
+                                <input v-model="form.selectedPayment" type="radio" name="payment" :value="method.id"
                                     class="sr-only" />
-                                <span v-if="selectedPayment === method.id"
+                                <span v-if="form.selectedPayment === method.id"
                                     class="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#1B1B1F] text-[10px] text-white">
                                     ✓
                                 </span>
@@ -111,9 +115,13 @@ function submitOrder() {
                     </template>
 
                     <template #forButtons>
-                        <button type="submit"
-                            class="mt-6 w-full rounded-full bg-[#1B1B1F] py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
-                            Place Order
+                            <button type="button" :disabled="form.processing" @click="submitOrder"
+                                class="mt-6 w-full rounded-full bg-[#1B1B1F] py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
+                            {{
+                                form.processing
+                                    ? "Processing..."
+                                    : "Place Order"
+                            }}
                         </button>
                     </template>
 

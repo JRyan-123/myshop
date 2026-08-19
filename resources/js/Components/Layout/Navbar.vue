@@ -49,7 +49,7 @@ onUnmounted(() => {
                     <Link :href="route('carts.index')" class="text-sm font-medium hover:text-[#B08D57]">
                         <ShoppingCart />
                     </Link>
-                    <Link :href="route('login')" class="text-sm font-medium hover:text-[#B08D57]">
+                    <Link :href="route('orders.index')" class="text-sm font-medium hover:text-[#B08D57]">
                         <ShoppingBag />
                     </Link>
                     <div class="relative text-center ms-3">
