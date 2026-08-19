@@ -11,6 +11,10 @@ class Order extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'shipping_address' => 'array',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

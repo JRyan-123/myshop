@@ -11,4 +11,6 @@ interface CartInterface
     public function getOrCreateCart(int $userId);
 
     public function addItem(Cart $cart, int $productId);
+
+    public function clearCart($cart);
 }

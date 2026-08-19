@@ -4,6 +4,7 @@ namespace App\Repositories;
 use App\Interfaces\CartInterface;
 use App\Models\Cart;
 
+
 class CartRepository implements CartInterface
 {
     /**
@@ -58,5 +59,12 @@ class CartRepository implements CartInterface
         }
 
         return $cart->fresh('cartItems.product');
+    }
+
+
+    
+    public function clearCart($cart)
+    {
+        $cart->delete();
     }
 }
