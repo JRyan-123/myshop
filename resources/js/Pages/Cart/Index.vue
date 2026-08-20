@@ -50,6 +50,7 @@ const removeItem = (item) => {
 </script>
 
 <template>
+
     <Head title="Cart" />
 
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
@@ -61,6 +62,9 @@ const removeItem = (item) => {
                 <h1 class="mt-2 font-serif text-3xl font-semibold sm:text-4xl">Cart</h1>
             </div>
 
+
+
+            <!-- cart items -->
             <div v-if="cartItems.length" class="grid gap-10 lg:grid-cols-3">
                 <!-- Cart items -->
                 <ul class="divide-y divide-black/10 lg:col-span-2">
@@ -113,7 +117,8 @@ const removeItem = (item) => {
                 </ul>
 
                 <!-- Order summary -->
-                <OrderSummary :subtotal="props.summary?.subtotal" :shipping_fee="props.summary?.shipping_fee" :total="props.summary?.total">
+                <OrderSummary :subtotal="props.summary?.subtotal" :shipping_fee="props.summary?.shipping_fee"
+                    :total="props.summary?.total">
                     <template #forButtons>
                         <Link :href="route('checkout.index')"
                             class="flex w-full items-center justify-center bg-[#1B1B1F] mt-5 py-3 rounded-full text-[#F7F2E7] text-sm font-medium hover:bg-[#B08D57]">
