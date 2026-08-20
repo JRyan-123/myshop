@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckoutRequest;
+use App\Http\Resources\OrderResource;
 use App\Interfaces\OrderInterface;
+use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,15 +19,29 @@ class OrderController extends Controller
     ) { }
 
 
+
+    /**
+     * order history currnet and old
+     *
+     * @return void
+     */
     public function index()
     {
         $orders = $this->order_interface->getOrder(auth()->id());
 
         return Inertia::render('Orders/Index', [
-            'orders' => $orders,
+            'orders' => OrderResource::collection($orders),
         ]);
     }
 
+
+
+    /**
+     * save orders
+     *
+     * @param CheckoutRequest $request
+     * @return void
+     */
     public function store(CheckoutRequest $request)
     {
         $this->order_service->placeOrder(
@@ -35,6 +51,22 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index');
 
+    }
+
+
+    /**
+     * display chosen order
+     *
+     * @param Order $order
+     * @return void
+     */
+    public function show(Order $order)
+    {
+        $order->load('orderItems.product');
+
+        return Inertia::render('Orders/Show', [
+            'order' => OrderResource::make($order),
+        ]);
     }
 
 
