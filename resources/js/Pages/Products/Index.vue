@@ -133,7 +133,7 @@ const addToCart = (productId) => {
 
                         <!-- Title -->
                         <span
-                            class="absolute inset-0 flex items-center justify-center p-3 text-center font-serif text-sm font-semibold leading-snug text-white">
+                            class="absolute inset-0 flex items-center justify-center p-3 text-center font-serif text-3xl font-semibold leading-snug text-white">
                             {{ book.title }}
                         </span>
                     </Link>
