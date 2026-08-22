@@ -7,6 +7,12 @@ use App\Interfaces\CheckoutInterface;
 
 class CheckoutRepository implements CheckoutInterface
 {
+    /**
+     * calculate total,subtotal,shipping fee
+     *
+     * @param [type] $cart
+     * @return void
+     */
     public function calculateSummary($cart)
     {
         $subtotal = $cart->cartItems->sum(function ($item) {

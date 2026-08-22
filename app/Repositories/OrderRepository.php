@@ -35,6 +35,12 @@ class OrderRepository implements OrderInterface
 
 
 
+    /**
+     * get order by id
+     *
+     * @param integer $userId
+     * @return void
+     */
     public function getOrder(int $userId)
     {
         return Order::with('orderItems')
