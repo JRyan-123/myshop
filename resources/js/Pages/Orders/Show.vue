@@ -1,13 +1,9 @@
 <script setup>
 import OrderSummary from '@/Components/Cart/OrderSummary.vue';
-import AppLayout from '@/Layouts/AppLayout.vue'
 import { formatPrice } from '@/utils/FormatPrice';
 import { statusStyles } from '@/utils/statusStyles';
-import { Head } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 
-defineOptions({
-    layout: AppLayout,
-})
 
 const props = defineProps({
     order: Object,
@@ -20,13 +16,13 @@ const currentIndex = steps.indexOf(order.status_label)
 </script>
 
 <template>
-
     <Head title="Order"></Head>
+
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
         <section class="mx-auto max-w-4xl px-6 py-12">
-            <a href="/orders" class="text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
+            <Link :href="route('orders.index')" class="text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
                 ← Back to orders
-            </a>
+            </Link>
 
             <div class="mt-4 mb-8 flex flex-wrap items-center justify-between gap-3">
                 <div>
