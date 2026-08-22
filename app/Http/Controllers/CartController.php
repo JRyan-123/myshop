@@ -47,7 +47,8 @@ class CartController extends Controller
     {
         $this->cart_service->addToCart(
             auth()->id(),
-            $request->product_id
+            $request->product_id,
+            $request->quantity
         );
 
         return back()->with('success', 'Added to cart.');

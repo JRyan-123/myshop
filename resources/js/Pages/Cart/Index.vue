@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { Head, Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import OrderSummary from '@/Components/Cart/OrderSummary.vue';
+import { formatPrice } from '@/utils/FormatPrice';
 
 
 defineOptions({
@@ -45,7 +46,6 @@ const removeItem = (item) => {
         })
     )
 }
-
 
 </script>
 
@@ -114,7 +114,7 @@ const removeItem = (item) => {
 
                                 </div>
                                 <span class="text-xs text-[#1B1B1F]/60">stock: {{ item.stock }} </span>
-                                <span class="font-medium">₱{{ (item.price * item.quantity).toFixed(2) }}</span>
+                                <span class="font-medium">{{ formatPrice(item.price * item.quantity) }}</span>
                             </div>
                         </div>
                     </li>

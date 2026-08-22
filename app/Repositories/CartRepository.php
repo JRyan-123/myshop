@@ -43,18 +43,15 @@ class CartRepository implements CartInterface
      * @param integer $productId
      * @return void
      */
-    public function addItem(Cart $cart, int $productId)
+    public function addItem(Cart $cart, int $productId, int $quantity, $item)
     {
-        $item = $cart->cartItems()
-            ->where('product_id', $productId)
-            ->first();
-
         if ($item) {
-            $item->increment('quantity');
+             $item->increment('quantity', $quantity);
         }
         else {
             $cart->cartItems()->create([
                 'product_id' => $productId,
+                'quantity' => $quantity,
             ]);
         }
 
@@ -62,7 +59,7 @@ class CartRepository implements CartInterface
     }
 
 
-    
+
     public function clearCart($cart)
     {
         $cart->delete();

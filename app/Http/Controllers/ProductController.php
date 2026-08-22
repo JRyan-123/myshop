@@ -36,4 +36,16 @@ class ProductController extends Controller
             ]),
         ]);
     }
+
+    public function show(Product $product)
+    {
+        return Inertia::render('Products/Show', [
+            'product' => ProductResource::make($product),
+            'recommendedProducts' => Product::query()
+                ->active()
+                ->inRandomOrder()
+                ->limit(3)
+                ->get(),
+        ]);
+    }
 }

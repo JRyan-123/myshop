@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Exceptions\InsufficientStockException;
 use App\Interfaces\CartInterface;
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class CartService
 {
@@ -20,10 +23,25 @@ class CartService
      * @param integer $productId
      * @return void
      */
-    public function addToCart(int $userId, int $productId)
+    public function addToCart(int $userId, int $productId, int $quantity)
     {
-        $cart = $this->cart_interface->getOrCreateCart($userId);
+        return DB::transaction(function () use ($userId, $productId, $quantity) {
 
-        return $this->cart_interface->addItem($cart, $productId);
+            $cart = $this->cart_interface->getOrCreateCart($userId);
+
+            $product = Product::lockForUpdate()->findOrFail($productId);
+
+            $item = $cart->cartItems()
+                ->where('product_id', $productId)
+                ->first();
+
+            if ($quantity + $item->quantity > $product->stock) {
+                throw new InsufficientStockException();
+            }
+
+            return $this->cart_interface->addItem($cart, $productId, $quantity, $item );
+
+        });
+
     }
 }
