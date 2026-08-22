@@ -3,6 +3,8 @@ import OrderSummary from '@/Components/Cart/OrderSummary.vue'
 import { formatPrice } from '@/utils/FormatPrice'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
+import { toast, Toaster } from 'vue-sonner'
+import 'vue-sonner/style.css'
 
 const props = defineProps({
     cart: Object,
@@ -32,12 +34,15 @@ const paymentMethods = [
 
 
 function submitOrder() {
-    form.post(route('orders.store'))
+    form.post(route('orders.store'), {
+        onSuccess: () => toast.success('Order placed successfully!'),
+        onError: () => toast.error('Unable to place order.'),
+    })
 }
 </script>
 
 <template>
-
+    <Toaster position="top-right" />
     <Head title="Checkout" />
 
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">

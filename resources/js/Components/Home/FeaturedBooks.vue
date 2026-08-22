@@ -1,5 +1,6 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
+import { toast } from 'vue-sonner';
 
 const props = defineProps({
     featuredBooks: Object,
@@ -9,7 +10,11 @@ const addToCart = (productId) => {
     router.post(route('carts.store'), {
         product_id: productId,
         quantity: 1,
-        })
+    }, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+    toast.success('Book added to cart!')
 }
 </script>
 

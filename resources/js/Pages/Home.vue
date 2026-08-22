@@ -9,6 +9,7 @@ import Category from '@/Components/Home/Category.vue';
 import FeaturedBooks from '@/Components/Home/FeaturedBooks.vue';
 import { Head, Link } from '@inertiajs/vue3'
 
+
 const props = defineProps({
     featuredBooks: Array,
     categories: Array,
@@ -22,15 +23,7 @@ const shelf = [
     { title: 'Quiet Hours', color: 'bg-[#3B4C63]' },
 ]
 
-const addToCart = (productId) => {
-    router.post(route('carts.store'), {
-        product_id: productId,
-        quantity: 1,
-    }, {
-        preserveScroll: true,
-        preserveState: true,
-    })
-}
+
 </script>
 
 <template>
@@ -90,11 +83,7 @@ const addToCart = (productId) => {
 
 
         <!-- Featured Books -->
-        <FeaturedBooks :featuredBooks="featuredBooks">
-            <button @click="addToCart(book)"
-                class="rounded-full border border-[#1B1B1F]/20 px-3 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">
-                Add to cart
-            </button>
-        </FeaturedBooks>
+        <FeaturedBooks :featuredBooks="featuredBooks" />
+
     </div>
 </template>

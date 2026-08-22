@@ -6,6 +6,7 @@ import OrderSummary from '@/Components/Cart/OrderSummary.vue';
 import { formatPrice } from '@/utils/FormatPrice';
 
 
+
 defineOptions({
     layout: AppLayout,
 });
@@ -43,7 +44,7 @@ const removeItem = (item) => {
     router.delete(
         route('cart-items.destroy', {
             cart_item: item.id,
-        })
+        }),
     )
 }
 
@@ -69,7 +70,8 @@ const removeItem = (item) => {
                 <!-- Cart items -->
                 <ul class="divide-y divide-black/10 lg:col-span-2">
                     <li v-for="item in cartItems" :key="item.id" class="flex gap-4 py-6 first:pt-0">
-                        <Link :href="route('products.show',item.product_id)" class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
+                        <Link :href="route('products.show', item.product_id)"
+                            class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
                             <img :src="`/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
                                 alt="" />
 
@@ -86,7 +88,8 @@ const removeItem = (item) => {
                         <div class="flex flex-1 flex-col justify-between">
                             <div class="flex items-start justify-between gap-4">
                                 <div>
-                                    <Link :href="route('products.show', item.product_id)" class="font-serif text-base font-semibold">
+                                    <Link :href="route('products.show', item.product_id)"
+                                        class="font-serif text-base font-semibold">
                                         {{ item.title }}
                                     </Link>
                                     <p class="text-sm text-[#1B1B1F]/60">{{ item.author }}</p>
@@ -109,7 +112,7 @@ const removeItem = (item) => {
                                     </button>
                                     <span class="w-4 text-center text-sm">{{ item.quantity }}</span>
                                     <button :disabled="item.quantity >= item.stock" @click="increaseQty(item)"
-                                    " class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
+                                        class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
                                         aria-label="Increase quantity">
                                         {{ item.quantity >= item.stock ? '' : '+' }}
                                     </button>
@@ -145,10 +148,10 @@ const removeItem = (item) => {
             <div v-else class="flex flex-col items-center py-24 text-center">
                 <p class="font-serif text-xl font-semibold">Your cart is empty</p>
                 <p class="mt-2 text-sm text-[#1B1B1F]/60">Browse the shelf and find something to read.</p>
-                <a href="/books"
+                <Link :href="route('products.index')"
                     class="mt-6 rounded-full bg-[#1B1B1F] px-6 py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
                     Browse books
-                </a>
+                </Link>
             </div>
         </section>
     </div>

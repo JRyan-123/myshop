@@ -68,10 +68,10 @@ const orders = props.orders.data;
             <div v-else class="flex flex-col items-center py-24 text-center">
                 <p class="font-serif text-xl font-semibold">No orders yet</p>
                 <p class="mt-2 text-sm text-[#1B1B1F]/60">Once you place an order, it'll show up here.</p>
-                <a href="/books"
+                <Link :href="route('products.index')"
                     class="mt-6 rounded-full bg-[#1B1B1F] px-6 py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
                     Browse books
-                </a>
+                </Link>
             </div>
 
 

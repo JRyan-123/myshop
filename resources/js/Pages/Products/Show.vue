@@ -2,6 +2,8 @@
 import { formatPrice } from '@/utils/FormatPrice'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
+import 'vue-sonner/style.css'
+import { toast, Toaster } from 'vue-sonner'
 
 const props = defineProps({
     product: Object,
@@ -25,6 +27,9 @@ const addToCart = (productId, quantity) => {
     router.post(route('carts.store'), {
         product_id: productId,
         quantity: quantity,
+    }, {
+        onSuccess: () => toast.success('Book successfully added to cart!'),
+        onError: () => toast.error('Unable to add to cart.'),
     })
 
     qty.value = 1
@@ -32,6 +37,7 @@ const addToCart = (productId, quantity) => {
 </script>
 
 <template>
+    <Toaster position="top-right"/>
     <Head title="Details"></Head>
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
         <section class="mx-auto max-w-5xl px-6 py-12">
@@ -108,7 +114,7 @@ const addToCart = (productId, quantity) => {
             <div class="mt-16">
                 <h2 class="font-serif text-xl font-semibold">You might also like</h2>
                 <div class="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3">
-                    <div v-for="book in related" :key="book.id"  class="group flex flex-col">
+                    <div v-for="book in related" :key="book.id" class="group flex flex-col">
                         <Link :href="route('products.show', book)"
                             class="group relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition hover:shadow-lg">
                             <!-- Book cover -->
@@ -124,7 +130,8 @@ const addToCart = (productId, quantity) => {
                                 {{ book.title }}
                             </span>
                         </Link>
-                        <Link :href="route('products.show', book)" class="mt-2 text-sm font-medium">{{ book.title }}</Link>
+                        <Link :href="route('products.show', book)" class="mt-2 text-sm font-medium">{{ book.title }}
+                        </Link>
                         <p class="text-sm text-[#1B1B1F]/60">${{ book.price }}</p>
                     </div>
                 </div>
