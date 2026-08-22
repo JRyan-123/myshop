@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Exceptions\EmptyCartException;
+use App\Exceptions\InsufficientStockException;
 use App\Interfaces\CartInterface;
 use App\Interfaces\CheckoutInterface;
 use App\Interfaces\OrderInterface;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -67,7 +69,15 @@ class OrderService
 
             // create order items
             foreach ($cart->cartItems as $cartItem) {
-                $product = $cartItem->product;
+
+                 $product = Product::whereKey($cartItem->product_id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                if ($product->stock < $cartItem->quantity) {
+                    throw new InsufficientStockException();
+                }
+
                 $this->order_interface->createOrderItem($order, [
                     'product_id'        => $product->id,
                     'product_name'      => $product->title,
@@ -75,7 +85,11 @@ class OrderService
                     'quantity'          => $cartItem->quantity,
                     'subtotal'          => $product->price * $cartItem->quantity,
                 ]);
+
+                // deduct cart items quantity to product stock
+                $product->decrement('stock', $cartItem->quantity);
             }
+
 
             // delete cart
             $this->cart_interface->clearCart($cart);
