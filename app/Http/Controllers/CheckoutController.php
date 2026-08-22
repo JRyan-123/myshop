@@ -13,6 +13,11 @@ class CheckoutController extends Controller
         protected CheckoutService $checkout_service
     ) { }
 
+    /**
+     * cjeckout page with order summary and cart items
+     *
+     * @return void
+     */
     public function index()
     {
         $data = $this->checkout_service->OrderSummary(auth()->id());

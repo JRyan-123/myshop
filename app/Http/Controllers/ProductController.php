@@ -37,6 +37,13 @@ class ProductController extends Controller
         ]);
     }
 
+
+    /**
+     * show product with recommended books
+     *
+     * @param Product $product
+     * @return void
+     */
     public function show(Product $product)
     {
         return Inertia::render('Products/Show', [

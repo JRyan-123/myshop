@@ -9,6 +9,11 @@ use Inertia\Inertia;
 
 class HomeController extends Controller
 {
+    /**
+     * home page with categories and 4 featured books
+     *
+     * @return void
+     */
     public function index()
     {
         return Inertia::render('Home', [
