@@ -35,7 +35,7 @@ class CartService
                 ->where('product_id', $productId)
                 ->first();
 
-            if ($quantity + $item->quantity > $product->stock) {
+            if ($quantity + $item?->quantity > $product->stock) {
                 throw new InsufficientStockException();
             }
 
