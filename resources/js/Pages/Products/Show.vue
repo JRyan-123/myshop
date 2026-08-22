@@ -21,12 +21,13 @@ function increment() {
 
 const lineTotal = computed(() => (book.price * qty.value))
 
-const addToCart = (productId, qty) => {
+const addToCart = (productId, quantity) => {
     router.post(route('carts.store'), {
         product_id: productId,
-        quantity: qty,
-    }
-    )
+        quantity: quantity,
+    })
+
+    qty.value = 1
 }
 </script>
 
