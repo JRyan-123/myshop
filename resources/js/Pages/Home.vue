@@ -59,6 +59,8 @@ const shelf = [
         </div>
       </div>
 
+
+
       <!-- Signature element: a tilted bookshelf of spines -->
       <div class="flex h-64 items-end justify-center gap-3 sm:h-80">
         <div
@@ -77,8 +79,12 @@ const shelf = [
       </div>
     </section>
 
+
+
     <!-- Category -->
     <Category :categories="categories" />
+
+
 
     <!-- Featured Books -->
     <FeaturedBooks :featuredBooks = "featuredBooks" />

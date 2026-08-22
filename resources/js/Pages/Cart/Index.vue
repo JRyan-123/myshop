@@ -88,6 +88,7 @@ const removeItem = (item) => {
                                 <div>
                                     <h3 class="font-serif text-base font-semibold">{{ item.title }}</h3>
                                     <p class="text-sm text-[#1B1B1F]/60">{{ item.author }}</p>
+
                                 </div>
                                 <button @click="removeItem(item)"
                                     class="text-sm text-[#1B1B1F]/40 transition hover:text-[#8C3B3B]"
@@ -97,6 +98,7 @@ const removeItem = (item) => {
                             </div>
 
                             <div class="mt-4 flex items-center justify-between">
+
                                 <div class="flex items-center gap-3 rounded-full border border-[#1B1B1F]/20 px-2 py-1">
                                     <button @click="decrementQty(item)"
                                         class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
@@ -104,12 +106,14 @@ const removeItem = (item) => {
                                         −
                                     </button>
                                     <span class="w-4 text-center text-sm">{{ item.quantity }}</span>
-                                    <button @click="increaseQty(item)"
-                                        class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
+                                    <button :disabled="item.quantity >= item.stock" @click="increaseQty(item)"
+                                    " class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
                                         aria-label="Increase quantity">
-                                        +
+                                        {{ item.quantity >= item.stock ? '' : '+' }}
                                     </button>
+
                                 </div>
+                                <span class="text-xs text-[#1B1B1F]/60">stock: {{ item.stock }} </span>
                                 <span class="font-medium">₱{{ (item.price * item.quantity).toFixed(2) }}</span>
                             </div>
                         </div>

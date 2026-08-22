@@ -1,7 +1,7 @@
 <script setup>
 import OrderSummary from '@/Components/Cart/OrderSummary.vue'
 import { formatPrice } from '@/utils/FormatPrice'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
 
 const props = defineProps({
@@ -41,8 +41,12 @@ function submitOrder() {
     <Head title="Checkout" />
 
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
+
         <section class="mx-auto max-w-6xl px-6 py-12">
-            <div class="mb-8">
+            <Link :href="route('orders.index')" class="text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
+                ← Back to orders
+            </Link>
+            <div class="mb-8 mt-5">
                 <p class="text-sm font-medium uppercase tracking-widest text-[#B08D57]">
                     Almost there
                 </p>
@@ -115,8 +119,8 @@ function submitOrder() {
                     </template>
 
                     <template #forButtons>
-                            <button type="button" :disabled="form.processing" @click="submitOrder"
-                                class="mt-6 w-full rounded-full bg-[#1B1B1F] py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
+                        <button type="button" :disabled="form.processing" @click="submitOrder"
+                            class="mt-6 w-full rounded-full bg-[#1B1B1F] py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
                             {{
                                 form.processing
                                     ? "Processing..."

@@ -14,10 +14,6 @@ const props = defineProps({
 })
 
 const orders = props.orders.data;
-
-console.log(orders);
-
-
 </script>
 
 <template>
@@ -32,6 +28,8 @@ console.log(orders);
                 </p>
                 <h1 class="mt-2 font-serif text-3xl font-semibold sm:text-4xl">Orders</h1>
             </div>
+
+
 
             <!-- Order list -->
             <ul v-if="orders" class="space-y-4">
@@ -75,6 +73,8 @@ console.log(orders);
                     Browse books
                 </a>
             </div>
+
+
         </section>
     </div>
 </template>
