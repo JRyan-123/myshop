@@ -69,7 +69,7 @@ const removeItem = (item) => {
                 <!-- Cart items -->
                 <ul class="divide-y divide-black/10 lg:col-span-2">
                     <li v-for="item in cartItems" :key="item.id" class="flex gap-4 py-6 first:pt-0">
-                        <div class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
+                        <Link :href="route('products.show',item.product_id)" class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
                             <img :src="`/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
                                 alt="" />
 
@@ -81,12 +81,14 @@ const removeItem = (item) => {
                                 class="relative z-10 flex h-full items-center justify-center p-2 text-center font-serif text-xs font-semibold leading-snug text-white">
                                 {{ item.title }}
                             </span>
-                        </div>
+                        </Link>
 
                         <div class="flex flex-1 flex-col justify-between">
                             <div class="flex items-start justify-between gap-4">
                                 <div>
-                                    <h3 class="font-serif text-base font-semibold">{{ item.title }}</h3>
+                                    <Link :href="route('products.show', item.product_id)" class="font-serif text-base font-semibold">
+                                        {{ item.title }}
+                                    </Link>
                                     <p class="text-sm text-[#1B1B1F]/60">{{ item.author }}</p>
 
                                 </div>

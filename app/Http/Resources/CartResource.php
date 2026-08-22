@@ -27,7 +27,6 @@ class CartResource extends JsonResource
                     'quantity' => $item->quantity,
                     'image_path' => $item->product->image_path,
                     'stock' => $item->product->stock,
-
                 ];
             }),
 

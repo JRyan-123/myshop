@@ -139,9 +139,9 @@ const addToCart = (productId) => {
 
                     <!-- Book information -->
                     <div class="mt-3">
-                        <h3 class="font-serif text-base font-semibold">
+                        <Link :href="route('products.show', book)" class="font-serif text-base font-semibold">
                             {{ book.title }}
-                        </h3>
+                        </Link>
 
                         <p class="text-sm text-[#1B1B1F]/60">
                             {{ book.author }}

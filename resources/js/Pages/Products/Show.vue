@@ -124,7 +124,7 @@ const addToCart = (productId, quantity) => {
                                 {{ book.title }}
                             </span>
                         </Link>
-                        <p class="mt-2 text-sm font-medium">{{ book.title }}</p>
+                        <Link :href="route('products.show', book)" class="mt-2 text-sm font-medium">{{ book.title }}</Link>
                         <p class="text-sm text-[#1B1B1F]/60">${{ book.price }}</p>
                     </div>
                 </div>
