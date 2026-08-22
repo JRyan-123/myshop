@@ -23,7 +23,7 @@ class OrderResource extends JsonResource
             'subtotal' => $this->subtotal,
             'shipping_fee' => $this->shipping_fee,
             'details' => $this->shipping_address,
-
+            'status_label' => $this->status->label(),
 
             'order_items' => $this->orderItems->map(function ($item) {
                 return [

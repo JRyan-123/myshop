@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,9 +12,13 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    protected $casts = [
-        'shipping_address' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'shipping_address' => 'array',
+            'status' => OrderStatus::class,
+        ];
+    }
 
     public function user(): BelongsTo
     {
