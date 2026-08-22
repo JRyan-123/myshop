@@ -44,7 +44,7 @@ console.log(orders);
                         </div>
 
                         <span class="rounded-full px-3 py-1 text-xs font-medium" :class="statusStyles[order.status]">
-                            {{ order.status }}
+                            {{ order.status_label }}
                         </span>
                     </div>
 

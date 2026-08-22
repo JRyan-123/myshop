@@ -15,10 +15,8 @@ const props = defineProps({
 
 const order = props.order.data;
 
-
-
-const steps = ['pending', 'Processing', 'Shipped', 'Delivered']
-
+const steps = ['Pending', 'Processing', 'Shipped', 'Delivered']
+const currentIndex = steps.indexOf(order.status_label)
 </script>
 
 <template>
@@ -39,15 +37,17 @@ const steps = ['pending', 'Processing', 'Shipped', 'Delivered']
                     <p class="mt-1 text-sm text-[#1B1B1F]/60">Placed on {{ order.date }}</p>
                 </div>
                 <span class="rounded-full px-4 py-1.5 text-sm font-medium" :class="statusStyles[order.status]">
-                    {{ order.status }}
+                    {{ order.status_label }}
                 </span>
             </div>
+
+
 
             <!-- Status tracker -->
             <div v-if="order.status !== 'Cancelled'" class="mb-10 flex items-center">
                 <template v-for="(step, i) in steps" :key="step">
                     <div class="flex flex-col items-center">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium" :class="steps.indexOf(order.status) >= i
+                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium" :class="currentIndex >= i
                                 ? 'bg-[#1B1B1F] text-[#F7F2E7]'
                                 : 'bg-black/10 text-[#1B1B1F]/40'
                             ">
@@ -56,11 +56,14 @@ const steps = ['pending', 'Processing', 'Shipped', 'Delivered']
                         <span class="mt-2 text-xs text-[#1B1B1F]/60">{{ step }}</span>
                     </div>
                     <div v-if="i < steps.length - 1" class="mx-2 h-0.5 flex-1"
-                        :class="steps.indexOf(order.status) > i ? 'bg-[#1B1B1F]' : 'bg-black/10'" />
+                        :class="currentIndex > i ? 'bg-[#1B1B1F]' : 'bg-black/10'" />
                 </template>
             </div>
 
+
+
             <div class="grid gap-6 lg:grid-cols-3">
+
                 <!-- Left: shipping + payment -->
                 <div class="space-y-6 lg:col-span-2">
                     <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
@@ -82,11 +85,15 @@ const steps = ['pending', 'Processing', 'Shipped', 'Delivered']
                         </dl>
                     </div>
 
+
+                    <!-- payment method -->
                     <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
                         <h2 class="font-serif text-lg font-semibold">Payment method</h2>
                         <p class="mt-3 text-sm"> order.payment </p>
                     </div>
 
+
+                    <!-- item details -->
                     <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
                         <h2 class="font-serif text-lg font-semibold">Items</h2>
                         <ul class="mt-4 divide-y divide-black/10">
