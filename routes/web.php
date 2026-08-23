@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -23,9 +24,6 @@ Route::get('/products', function () {
     return Inertia::render('Products/Index');
 })->middleware(['auth', 'verified'])->name('products.index');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('/products', CustomerProductController::class);
 
@@ -47,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
 //admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function ()  {
+    Route::resource('/',AdminController::class);
     Route::resource('/products', AdminProductController::class);
     Route::resource('/categories', CategoryController::class);
     Route::resource('/orders', AdminOrderController::class);
