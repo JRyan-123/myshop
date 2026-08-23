@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Interfaces\CartInterface;
 use App\Models\Cart;
-
+use App\Models\Product;
 
 class CartRepository implements CartInterface
 {
@@ -33,7 +34,6 @@ class CartRepository implements CartInterface
         return Cart::firstOrCreate([
             'user_id' => $userId,
         ]);
-
     }
 
 
@@ -48,9 +48,8 @@ class CartRepository implements CartInterface
     public function addItem(Cart $cart, int $productId, int $quantity, $item)
     {
         if ($item) {
-             $item->increment('quantity', $quantity);
-        }
-        else {
+            $item->increment('quantity', $quantity);
+        } else {
             $cart->cartItems()->create([
                 'product_id' => $productId,
                 'quantity' => $quantity,
@@ -61,9 +60,24 @@ class CartRepository implements CartInterface
     }
 
 
-
+    /**
+     * Undocumented function
+     *
+     * @param [type] $cart
+     * @return void
+     */
     public function clearCart($cart)
     {
         $cart->delete();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getBook($bookId) {
+        return Product::where('id', $bookId)
+            ->first();
     }
 }

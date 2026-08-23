@@ -13,4 +13,6 @@ interface CartInterface
     public function addItem(Cart $cart, int $productId, int $quantity, $item);
 
     public function clearCart($cart);
+
+    public function getBook($bookId);
 }

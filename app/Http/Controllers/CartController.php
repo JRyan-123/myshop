@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddToCartRequest;
 use App\Http\Resources\CartResource;
 use App\Interfaces\CartInterface;
+use App\Models\Product;
 use App\Services\CartService;
 use App\Services\CheckoutService;
 use App\Services\OrderService;
@@ -15,7 +16,8 @@ class CartController extends Controller
 
     public function __construct(
         protected CartService $cart_service,
-        protected CheckoutService $checkout_service
+        protected CheckoutService $checkout_service,
+        protected CartInterface $cart_interface,
     ){}
 
 
@@ -51,7 +53,9 @@ class CartController extends Controller
             $request->quantity
         );
 
-        return back()->with('success', 'Added to cart.');
+        $book = $this->cart_interface->getBook($request->product_id);
+
+        return back()->with('success', '"'. $book->title . '" Added to cart.');
     }
 
 }
