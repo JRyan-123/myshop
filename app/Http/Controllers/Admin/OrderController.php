@@ -10,6 +10,6 @@ class OrderController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Admin/Oeders/Index');
+        return Inertia::render('Admin/Orders/Index');
     }
 }

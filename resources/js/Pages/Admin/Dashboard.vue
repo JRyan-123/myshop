@@ -1,101 +1,107 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { LogOut } from 'lucide-vue-next';
-import { ref } from 'vue'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 
-// Pass the current section in from each page so the right nav item highlights, e.g.
-// <AdminLayout current="orders">
-const props = defineProps({
-  current: { type: String, default: '' },
+defineOptions({
+    layout: AdminLayout,
 })
-
-const sidebarOpen = ref(false)
-
-const nav = [
-  { key: 'dashboard', label: 'Dashboard', href: '/admin', icon: 'M4 6h16M4 12h16M4 18h7' },
-  { key: 'books', label: 'Books', href: '/admin/books', icon: 'M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z' },
-  { key: 'categories', label: 'Categories', href: '/admin/categories', icon: 'M4 6a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V6z' },
-  { key: 'orders', label: 'Orders', href: '/admin/orders', icon: 'M3 3h2l2.4 12.2a1 1 0 001 .8h9.2a1 1 0 001-.8L20 7H6' },
-  { key: 'customers', label: 'Customers', href: '/admin/customers', icon: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 3a4 4 0 110 8 4 4 0 010-8z' },
-  { key: 'settings', label: 'Settings', href: '/admin/settings', icon: 'M12 15a3 3 0 100-6 3 3 0 000 6z' },
+// In your real app these come from an Inertia prop, e.g.
+// defineProps({ stats: Object, recentOrders: Array, lowStock: Array })
+const stats = [
+    { label: 'Total sales', value: '₱182,400', change: '+12.4%', up: true },
+    { label: 'Orders', value: '312', change: '+5.1%', up: true },
+    { label: 'Books listed', value: '3,204', change: '+18', up: true },
+    { label: 'Customers', value: '1,540', change: '-1.2%', up: false },
 ]
+
+const recentOrders = [
+    { id: 1042, customer: 'Juan Dela Cruz', total: 535, status: 'Delivered' },
+    { id: 1039, customer: 'Maria Santos', total: 1600, status: 'Shipped' },
+    { id: 1031, customer: 'Ramon Reyes', total: 4500, status: 'Processing' },
+    { id: 1020, customer: 'Ella Cruz', total: 1375, status: 'Cancelled' },
+    { id: 1017, customer: 'Nico Aquino', total: 890, status: 'Delivered' },
+]
+
+const lowStock = [
+    { title: 'Paper Moons', stock: 3 },
+    { title: 'Wander Light', stock: 1 },
+    { title: 'The Signal Sea', stock: 4 },
+]
+
+const statusStyles = {
+    Pending: 'bg-[#B08D57]/15 text-[#B08D57]',
+    Processing: 'bg-[#3B4C63]/15 text-[#3B4C63]',
+    Shipped: 'bg-[#5B7B6E]/15 text-[#5B7B6E]',
+    Delivered: 'bg-[#2F4538]/15 text-[#2F4538]',
+    Cancelled: 'bg-[#8C3B3B]/15 text-[#8C3B3B]',
+}
+
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#F4F4F2] text-[#1B1B1F]">
-    <!-- Mobile overlay -->
-    <div
-      v-if="sidebarOpen"
-      class="fixed inset-0 z-30 bg-black/30 lg:hidden"
-      @click="sidebarOpen = false"
-    />
 
-    <!-- Sidebar -->
-    <aside
-      class="fixed inset-y-0 left-0 z-40 w-64 transform bg-[#1B1B1F] text-[#F7F2E7] transition-transform lg:translate-x-0"
-      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-    >
-      <div class="flex h-16 items-center gap-2 px-6">
-        <span class="font-serif text-xl font-semibold">MyShop</span>
-        <span class="rounded-full bg-[#B08D57] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide">
-          Admin
-        </span>
-      </div>
 
-      <nav class="mt-4 space-y-1 px-3">
-        <a
-          v-for="item in nav"
-          :key="item.key"
-          :href="item.href"
-          class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition"
-          :class="
-            current === item.key
-              ? 'bg-[#B08D57] text-[#1B1B1F]'
-              : 'text-[#F7F2E7]/70 hover:bg-white/10 hover:text-[#F7F2E7]'
-          "
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon" />
-          </svg>
-          {{ item.label }}
-        </a>
-      </nav>
-
-      <div class="absolute bottom-0 w-full border-t border-white/10 p-3">
-        <Link :href="route('logout')" method="post" as="button"
-          class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-[#F7F2E7]/70 transition hover:bg-white/10 hover:text-[#F7F2E7]">
-            <LogOut/>
-          Log out
-        </Link>
-      </div>
-    </aside>
-
-    <!-- Main column -->
-    <div class="lg:pl-64">
-      <!-- Topbar -->
-      <header class="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-black/10 bg-[#F4F4F2]/90 px-6 backdrop-blur">
-        <div class="flex items-center gap-4">
-          <button class="lg:hidden" aria-label="Toggle sidebar" @click="sidebarOpen = !sidebarOpen">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <slot name="header">
-            <h1 class="font-serif text-lg font-semibold capitalize">{{ current }}</h1>
-          </slot>
+        <!-- Stat cards -->
+        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div v-for="stat in stats" :key="stat.label" class="rounded-2xl border border-black/10 bg-white p-5">
+                <p class="text-sm text-[#1B1B1F]/60">{{ stat.label }}</p>
+                <p class="mt-2 font-serif text-2xl font-semibold">{{ stat.value }}</p>
+                <p class="mt-1 text-xs font-medium" :class="stat.up ? 'text-[#5B7B6E]' : 'text-[#8C3B3B]'">
+                    {{ stat.change }} vs last month
+                </p>
+            </div>
         </div>
 
-        <div class="flex items-center gap-3">
-          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#1B1B1F] text-sm font-medium text-[#F7F2E7]">
-            A
-          </div>
-        </div>
-      </header>
+        <div class="mt-6 grid gap-6 lg:grid-cols-3">
+            <!-- Recent orders -->
+            <div class="rounded-2xl border border-black/10 bg-white p-5 lg:col-span-2">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-serif text-base font-semibold">Recent orders</h2>
+                    <a href="/admin/orders" class="text-sm font-medium text-[#B08D57] hover:underline">
+                        View all
+                    </a>
+                </div>
 
-      <!-- Page content -->
-      <main class="p-6">
-        <slot />
-      </main>
-    </div>
-  </div>
+                <table class="mt-4 w-full text-left text-sm">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-wide text-[#1B1B1F]/50">
+                            <th class="pb-2 font-medium">Order</th>
+                            <th class="pb-2 font-medium">Customer</th>
+                            <th class="pb-2 font-medium">Total</th>
+                            <th class="pb-2 font-medium">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-black/5">
+                        <tr v-for="order in recentOrders" :key="order.id">
+                            <td class="py-3 font-medium">#{{ order.id }}</td>
+                            <td class="py-3 text-[#1B1B1F]/70">{{ order.customer }}</td>
+                            <td class="py-3">₱{{ order.total.toLocaleString('en-PH') }}</td>
+                            <td class="py-3">
+                                <span class="rounded-full px-2.5 py-1 text-xs font-medium"
+                                    :class="statusStyles[order.status]">
+                                    {{ order.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Low stock -->
+            <div class="rounded-2xl border border-black/10 bg-white p-5">
+                <h2 class="font-serif text-base font-semibold">Low stock</h2>
+                <ul class="mt-4 space-y-3">
+                    <li v-for="book in lowStock" :key="book.title" class="flex items-center justify-between text-sm">
+                        <span>{{ book.title }}</span>
+                        <span class="rounded-full bg-[#8C3B3B]/15 px-2.5 py-1 text-xs font-medium text-[#8C3B3B]">
+                            {{ book.stock }} left
+                        </span>
+                    </li>
+                </ul>
+                <a href="/admin/books"
+                    class="mt-4 block text-center text-sm font-medium text-[#B08D57] hover:underline">
+                    Manage inventory
+                </a>
+            </div>
+        </div>
+
 </template>
