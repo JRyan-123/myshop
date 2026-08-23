@@ -34,10 +34,7 @@ const paymentMethods = [
 
 
 function submitOrder() {
-    form.post(route('orders.store'), {
-        onSuccess: () => toast.success('Order placed successfully!'),
-        onError: () => toast.error('Unable to place order.'),
-    })
+    form.post(route('orders.store'))
 }
 </script>
 

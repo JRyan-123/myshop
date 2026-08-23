@@ -49,11 +49,9 @@ const addToCart = (productId) => {
     router.post(route('carts.store'), {
         product_id: productId,
         quantity: 1,
-        }, {
-        ...routerOptions,
-        onSuccess: () => toast.success('Book successfully added to cart!'),
-        onError: () => toast.error('Unable to add to cart.'),
-        }
+        },
+        routerOptions,
+
     )
 
 }

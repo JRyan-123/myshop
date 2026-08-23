@@ -36,7 +36,7 @@ class CartService
                 ->first();
 
             if ($quantity + $item?->quantity > $product->stock) {
-                throw new InsufficientStockException();
+                throw new InsufficientStockException( "Only {$product->stock} items are available. You already have {$item?->quantity} in the cart");
             }
 
             return $this->cart_interface->addItem($cart, $productId, $quantity, $item );

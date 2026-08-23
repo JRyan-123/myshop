@@ -1,15 +1,16 @@
 <script setup>
+import Flashtoast from '@/Components/Layout/Flashtoast.vue';
 import Footer from '@/Components/Layout/Footer.vue';
 import Navbar from '@/Components/Layout/Navbar.vue';
-import { Toaster } from 'vue-sonner';
-import 'vue-sonner/style.css'
+
+
 
 
 
 </script>
 
 <template>
-    <Toaster position="top-right" />
+    <Flashtoast />
     <Navbar />
 
     <main>

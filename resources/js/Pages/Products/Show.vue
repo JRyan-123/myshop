@@ -1,9 +1,9 @@
 <script setup>
+import Flashtoast from '@/Components/Layout/Flashtoast.vue'
 import { formatPrice } from '@/utils/FormatPrice'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
-import 'vue-sonner/style.css'
-import { toast, Toaster } from 'vue-sonner'
+
 
 const props = defineProps({
     product: Object,
@@ -27,9 +27,6 @@ const addToCart = (productId, quantity) => {
     router.post(route('carts.store'), {
         product_id: productId,
         quantity: quantity,
-    }, {
-        onSuccess: () => toast.success('Book successfully added to cart!'),
-        onError: () => toast.error('Unable to add to cart.'),
     })
 
     qty.value = 1
@@ -37,7 +34,7 @@ const addToCart = (productId, quantity) => {
 </script>
 
 <template>
-    <Toaster position="top-right"/>
+    <Flashtoast />
     <Head title="Details"></Head>
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
         <section class="mx-auto max-w-5xl px-6 py-12">
