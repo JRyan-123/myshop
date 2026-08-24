@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Interfaces\Admin\DashboardInterface;
 use App\Interfaces\CartInterface;
 use App\Interfaces\CheckoutInterface;
 use App\Interfaces\OrderInterface;
+use App\Repositories\Admin\DashboardRepository;
 use App\Repositories\CartRepository;
 use App\Repositories\CheckoutRepository;
 use App\Repositories\OrderRepository;
@@ -31,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             OrderInterface::class,
             OrderRepository::class,
+        );
+
+        //ADMIN
+        $this->app->bind(
+            DashboardInterface::class,
+            DashboardRepository::class
         );
     }
 

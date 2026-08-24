@@ -77,10 +77,10 @@ const sidebarOpen = ref(false)
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <div
+                    <Link :href="route('profile.edit')"
                         class="flex h-9 w-9 items-center justify-center rounded-full bg-[#1B1B1F] text-sm font-medium text-[#F7F2E7]">
                         A
-                    </div>
+                    </Link>
                 </div>
             </header>
 
