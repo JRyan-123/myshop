@@ -14,6 +14,7 @@ const props = defineProps({
     filters: Object,
 });
 
+console.log(props.products)
 const search = ref(props.filters.search ?? "");
 
 const routerOptions = {
@@ -49,7 +50,7 @@ const addToCart = (productId) => {
     router.post(route('carts.store'), {
         product_id: productId,
         quantity: 1,
-        },
+    },
         routerOptions,
 
     )
@@ -58,6 +59,7 @@ const addToCart = (productId) => {
 </script>
 
 <template>
+
     <Head title="Products" />
 
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
@@ -101,7 +103,7 @@ const addToCart = (productId) => {
 
 
                 <!-- Database categories -->
-                <button v-for="cat in categories" :key="cat.id" @click="selectCategory(cat.slug)"
+                <button v-for="cat in props.categories" :key="cat.id" @click="selectCategory(cat.slug)"
                     class="rounded-full border px-4 py-2 text-sm font-medium transition" :class="filters.category === cat.slug
                         ? 'border-[#1B1B1F] bg-[#1B1B1F] text-[#F7F2E7]'
                         : 'border-[#1B1B1F]/20 hover:border-[#B08D57] hover:text-[#B08D57]'
@@ -114,14 +116,15 @@ const addToCart = (productId) => {
 
             <!-- Product count -->
             <p class="mb-6 text-sm text-[#1B1B1F]/60">
-                Showing {{ products.data.length }} of {{ products.total }} book{{ products.total === 1 ? '' : 's' }}
+                Showing {{ products.data.length }} of {{ props.products.meta.total }} book{{ products.total === 1 ? '' :
+                's' }}
             </p>
 
 
 
             <!-- Product grid -->
             <div v-if="products.data.length" class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
-                <article v-for="book in products.data" :key="book.id" class="group flex flex-col">
+                <article v-for="book in props.products.data" :key="book.id" class="group flex flex-col">
 
                     <!-- Book cover -->
                     <Link :href="route('products.show', book)"
@@ -172,8 +175,9 @@ const addToCart = (productId) => {
 
 
             <!-- Pagination -->
-            <div v-if="products.links && products.links.length > 3" class="mt-10 flex flex-wrap justify-center gap-2">
-                <button v-for="link in products.links" :key="link.label" :disabled="!link.url"
+
+            <div class="mt-10 flex flex-wrap justify-center gap-2">
+                <button v-for="link in props.products.meta.links" :disabled="!link.url"
                     @click="link.url && router.get(link.url)" class="rounded-lg border px-4 py-2 text-sm transition"
                     :class="{
                         'bg-[#1B1B1F] text-[#F7F2E7]': link.active,
