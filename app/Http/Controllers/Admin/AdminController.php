@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\OrderResource;
-use App\Http\Resources\Admin\ProductResource;
+
+
+use App\Http\Resources\OrderResource;
+use App\Http\Resources\ProductResource;
 use App\Interfaces\Admin\DashboardInterface;
 use App\Services\Admin\DashboardService;
 use Illuminate\Http\Request;
