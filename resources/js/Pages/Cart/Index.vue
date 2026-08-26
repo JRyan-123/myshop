@@ -48,6 +48,18 @@ const removeItem = (item) => {
     )
 }
 
+const stockRule = (item) => {
+    if (item.quantity > item.stock) {
+        router.patch(
+            route('cart-items.update', item.id),
+            {
+                quantity: item.stock
+            }
+        )
+        return item.stock
+    }
+    return item.quantity
+}
 </script>
 
 <template>
@@ -110,7 +122,7 @@ const removeItem = (item) => {
                                         aria-label="Decrease quantity">
                                         −
                                     </button>
-                                    <span class="w-4 text-center text-sm">{{ item.quantity }}</span>
+                                    <span class="w-4 text-center text-sm">{{  stockRule(item) }}</span>
                                     <button :disabled="item.quantity >= item.stock" @click="increaseQty(item)"
                                         class="flex h-6 w-6 items-center justify-center rounded-full text-sm transition hover:bg-[#1B1B1F]/10"
                                         aria-label="Increase quantity">
