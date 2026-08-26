@@ -47,12 +47,12 @@ class Product extends Model
 
     public function scopeCategory($query, $category)
     {
-        return $query->when(
-            $category,
-            fn($query) => $query->whereHas(
-                'category',
-                fn($query) => $query->where('slug', $category)
-            )
-        );
+        if (!$category) {
+            return $query;
+        }
+
+        return $query->whereHas('category',
+            fn($query) => $query->where('slug', $category));
+
     }
 }
