@@ -7,7 +7,7 @@ const props = defineProps({
         required: true,
     },
     value: {
-        type: Number,
+         type: [String, Number],
         required: true
     },
     comparison: {
