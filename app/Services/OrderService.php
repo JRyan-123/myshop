@@ -70,7 +70,7 @@ class OrderService
             // create order items
             foreach ($cart->cartItems as $cartItem) {
 
-                 $product = Product::whereKey($cartItem->product_id)
+                $product = Product::whereKey($cartItem->product_id)
                     ->lockForUpdate()
                     ->firstOrFail();
 
@@ -86,8 +86,14 @@ class OrderService
                     'subtotal'          => $product->price * $cartItem->quantity,
                 ]);
 
-                // deduct cart items quantity to product stock
-                $product->decrement('stock', $cartItem->quantity);
+                // deduct cart items quantity to product stock and make inactive when 0 stock
+                $product->stock -= $cartItem->quantity;
+
+                if ($product->stock === 0) {
+                    $product->is_active = false;
+                }
+
+                $product->save();
             }
 
 
