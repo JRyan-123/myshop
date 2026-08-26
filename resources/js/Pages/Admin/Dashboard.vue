@@ -15,7 +15,6 @@ const props = defineProps({
     lowStock: Object
 })
 
-console.log(props.orders)
 
 const stats = props.stats ?? {};
 const recentOrders = props.orders.data ?? []
@@ -67,7 +66,7 @@ const lowStock = props.lowStock.data ?? []
                         <td class="py-3 font-medium">#{{ order.id }}</td>
                         <td class="py-3 text-[#1B1B1F]/70">{{ order.shipping_address.name }}</td>
                         <td class="py-3">{{ formatPrice(order.total) }}</td>
-                        <td class="py-3">
+                        <td class="py-3 ">
                             <span class="rounded-full px-2.5 py-1 text-xs font-medium"
                                 :class="statusStyles[order.status.value]">
                                 {{ order.status.label }}

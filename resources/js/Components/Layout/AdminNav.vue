@@ -3,8 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3'
 import {  BookOpenText, LayoutDashboard, LayoutList, ShoppingBag } from 'lucide-vue-next';
 
 const page = usePage()
-
-const isActive = (url) => page.url === url
+const isActive = (url) => page.url.split('?')[0] === url
 </script>
 
 <template>

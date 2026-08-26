@@ -18,7 +18,7 @@ const getPageTitle = () => {
     ];
 
     const match = titles.find( ([url]) =>
-            page.url === url
+        page.url.split('?')[0] === url
     )
 
     return match?.[1] ?? ''

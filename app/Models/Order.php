@@ -34,4 +34,17 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class);
     }
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($search) {
+            $query->where('order_number', 'like', "%{$search}%")
+                ->orWhere('shipping_address->name', 'like', "%{$search}%")
+                ->orWhere('shipping_address->phone', 'like', "%{$search}%");
+        });
+    }
 }
