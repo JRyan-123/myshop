@@ -47,4 +47,11 @@ class Order extends Model
                 ->orWhere('shipping_address->phone', 'like', "%{$search}%");
         });
     }
+    public function scopeStatus($query, $status)
+    {
+        if (!$status) {
+            return $query;
+        }
+        return $query->where('status', $status);
+    }
 }
