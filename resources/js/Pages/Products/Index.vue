@@ -3,6 +3,7 @@ import { Head, Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { ref } from "vue";
 import { toast } from "vue-sonner";
+import Pagination from "@/Components/Products/Pagination.vue";
 
 defineOptions({
     layout: AppLayout,
@@ -14,7 +15,6 @@ const props = defineProps({
     filters: Object,
 });
 
-console.log(props.products)
 const search = ref(props.filters.search ?? "");
 
 const routerOptions = {
@@ -175,16 +175,7 @@ const addToCart = (productId) => {
 
 
             <!-- Pagination -->
-
-            <div class="mt-10 flex flex-wrap justify-center gap-2">
-                <button v-for="link in props.products.meta.links" :disabled="!link.url"
-                    @click="link.url && router.get(link.url)" class="rounded-lg border px-4 py-2 text-sm transition"
-                    :class="{
-                        'bg-[#1B1B1F] text-[#F7F2E7]': link.active,
-                        'opacity-50 cursor-not-allowed': !link.url,
-                        'hover:border-[#B08D57]': link.url && !link.active,
-                    }" v-html="link.label" />
-            </div>
+            <Pagination :metaLinks="props.products.meta.links" />
         </section>
     </div>
 </template>

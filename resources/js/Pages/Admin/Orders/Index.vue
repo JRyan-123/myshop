@@ -1,8 +1,9 @@
 <script setup>
+import Pagination from '@/Components/Products/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { formatPrice } from '@/utils/FormatPrice'
 import { statusStyles } from '@/utils/statusStyles'
-import { router } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import { ref } from 'vue';
 
 
@@ -20,12 +21,9 @@ const props = defineProps({
 const orders = props.orders.data ?? []
 const search = ref(props.filters.search ?? "");
 const status = ref(props.filters.status ?? "");
+console.log(props.orders.meta.links)
 
 
-function updateStatus(order, newStatus) {
-    // Replace with router.patch(`/admin/orders/${order.id}`, { status: newStatus })
-    order.status = newStatus
-}
 
 const searchProducts = () => {
     router.get(
@@ -34,6 +32,19 @@ const searchProducts = () => {
             status: status.value
         })
     )
+}
+
+const updateStatus = (order, status) => {
+    router.patch(
+        route('admin.orders.update', order.id),{
+            status,
+        },
+        {
+            preserveState: false,
+            preserveScroll: true,
+        }
+    )
+
 }
 
 </script>
@@ -98,10 +109,10 @@ const searchProducts = () => {
                     </td>
                     <td class="px-5 py-3">
                         <div class="flex justify-end">
-                            <a :href="`/admin/orders/${order.id}`"
+                            <Link :href="route('admin.orders.show',{ order: order })"
                                 class="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:text-[#B08D57]">
                                 View
-                            </a>
+                            </Link>
                         </div>
                     </td>
                 </tr>
@@ -113,10 +124,12 @@ const searchProducts = () => {
                 </tr>
             </tbody>
         </table>
+
     </div>
 
     <p class="mt-4 text-sm text-[#1B1B1F]/50">
         Showing {{ orders.length }} of {{ orders.length }} orders
     </p>
+    <Pagination :metaLinks="props.orders.meta.links" />
 
 </template>
