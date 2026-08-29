@@ -34,7 +34,10 @@ class OrderResource extends JsonResource
                 ];
             }),
             'shipping_address' => [
-                'name' => $this->shipping_address['name']
+                'name' => $this->shipping_address['name'],
+                'phone' => $this->shipping_address['phone'],
+                'city' => $this->shipping_address['city'],
+                'street' => $this->shipping_address['street'],
             ],
             'status' => [
                 'value' => $this->status->value,
