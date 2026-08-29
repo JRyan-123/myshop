@@ -43,15 +43,18 @@ class OrderController extends Controller
                 ->map(fn ($status) => [
                     'value' => $status->value,
                     'label' => $status->label(),
-                ])
-            ->values(),
+                ])->values(),
         ]);
     }
 
 
     public function show(Order $order)
     {
-        return Inertia::render('Admin/Orders/Show');
+
+        return Inertia::render('Admin/Orders/Show', [
+            'order' => OrderResource::make($order),
+
+        ]);
     }
 
     public function update(Order $order, OrderStatusRequest $request)
@@ -63,4 +66,6 @@ class OrderController extends Controller
         return back()->with('success', 'Status changed to '. $newStatus->value);
 
     }
+
+
 }

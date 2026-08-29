@@ -12,17 +12,15 @@ const props = defineProps({
 })
 
 const order = props.order.data;
-console.log(order.status.label)
+
 const steps = computed(() => {
     return Object.values(props.statuses).filter(status =>  status.value !== 'cancelled')
 })
 
 const currentIndex = computed(() => {
-
     return steps.value.findIndex(
         step => step.value === order.status.value
     );
-
 });
 </script>
 
@@ -113,15 +111,6 @@ const currentIndex = computed(() => {
                                 <div class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
                                     <img :src="`/${item.image_path}`"
                                         class="absolute inset-0 h-full w-full object-cover" alt="" />
-
-                                    <!-- Dark overlay -->
-                                    <div class="absolute inset-0 bg-black/40"></div>
-
-                                    <!-- Centered text -->
-                                    <span
-                                        class="relative z-10 flex h-full items-center justify-center p-2 text-center font-serif text-xs font-semibold leading-snug text-white">
-                                        {{ item.product_name }}
-                                    </span>
                                 </div>
                                 <div class="flex flex-1 items-center justify-between text-sm">
                                     <div>
