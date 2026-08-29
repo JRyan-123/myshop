@@ -3,16 +3,27 @@ import OrderSummary from '@/Components/Cart/OrderSummary.vue';
 import { formatPrice } from '@/utils/FormatPrice';
 import { statusStyles } from '@/utils/statusStyles';
 import { Head, Link } from '@inertiajs/vue3'
+import { computed } from 'vue';
 
 
 const props = defineProps({
     order: Object,
+    statuses : Object
 })
 
 const order = props.order.data;
+console.log(order.status.label)
+const steps = computed(() => {
+    return Object.values(props.statuses).filter(status =>  status.value !== 'cancelled')
+})
 
-const steps = ['Pending', 'Processing', 'Shipped', 'Delivered']
-const currentIndex = steps.indexOf(order.status_label)
+const currentIndex = computed(() => {
+
+    return steps.value.findIndex(
+        step => step.value === order.status.value
+    );
+
+});
 </script>
 
 <template>
@@ -40,7 +51,7 @@ const currentIndex = steps.indexOf(order.status_label)
 
 
             <!-- Status tracker -->
-            <div v-if="order.status !== 'Cancelled'" class="mb-10 flex items-center">
+            <div v-if="order.status.value !== 'cancelled'" class="mb-10 flex items-center">
                 <template v-for="(step, i) in steps" :key="step">
                     <div class="flex flex-col items-center">
                         <div class="flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium" :class="currentIndex >= i
@@ -49,11 +60,15 @@ const currentIndex = steps.indexOf(order.status_label)
                             ">
                             {{ i + 1 }}
                         </div>
-                        <span class="mt-2 text-xs text-[#1B1B1F]/60">{{ step }}</span>
+                        <span class="mt-2 text-xs text-[#1B1B1F]/60">{{ step.label }}</span>
                     </div>
                     <div v-if="i < steps.length - 1" class="mx-2 h-0.5 flex-1"
                         :class="currentIndex > i ? 'bg-[#1B1B1F]' : 'bg-black/10'" />
                 </template>
+            </div>
+
+            <div v-else>
+                cancelled
             </div>
 
 

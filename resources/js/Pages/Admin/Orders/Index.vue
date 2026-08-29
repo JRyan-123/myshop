@@ -21,7 +21,6 @@ const props = defineProps({
 const orders = props.orders.data ?? []
 const search = ref(props.filters.search ?? "");
 const status = ref(props.filters.status ?? "");
-console.log(props.orders.meta.links)
 
 
 

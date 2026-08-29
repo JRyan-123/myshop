@@ -41,8 +41,8 @@ const orders = props.orders.data;
                             <p class="text-xs text-[#1B1B1F]/60">{{ order.date }}</p>
                         </div>
 
-                        <span class="rounded-full px-3 py-1 text-xs font-medium" :class="statusStyles[order.status]">
-                            {{ order.status_label }}
+                        <span class="rounded-full px-3 py-1 text-xs font-medium" :class="statusStyles[order.status.value]">
+                            {{ order.status.label }}
                         </span>
                     </div>
 
