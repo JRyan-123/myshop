@@ -4,15 +4,15 @@ import { formatPrice } from '@/utils/FormatPrice';
 
 const props = defineProps({
     subtotal: {
-        type: Number,
+        type: [Number, String],
         required: true
     },
     shipping_fee: {
-        type: Number,
+        type:  [Number, String],
         required: true
     },
     total: {
-        type: Number,
+        type:  [Number, String],
         required: true
     }
 })

@@ -3,7 +3,7 @@ import { router } from "@inertiajs/vue3";
     const props = defineProps({
         metaLinks : [Object, String]
     })
-console.log(props.metaLinks)
+
 const goTo = (url) => {
     if (!url) return
 
