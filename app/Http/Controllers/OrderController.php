@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
 use App\Http\Requests\CheckoutRequest;
 use App\Http\Resources\OrderResource;
 use App\Interfaces\OrderInterface;
@@ -66,6 +67,11 @@ class OrderController extends Controller
 
         return Inertia::render('Orders/Show', [
             'order' => OrderResource::make($order),
+            'statuses' => collect(OrderStatus::cases())
+                ->map(fn($status) => [
+                    'value' => $status->value,
+                    'label' => $status->label()
+                ])->values(),
         ]);
     }
 
