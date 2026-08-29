@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderStatusRequest;
 use App\Http\Resources\OrderResource;
 use App\Interfaces\Admin\DashboardInterface;
 use App\Models\Order;
@@ -17,7 +18,12 @@ class OrderController extends Controller
         protected DashboardInterface $dashboard_interface,
     ) {}
 
-
+    /**
+     * organize orders with search and status
+     *
+     * @param Request $request
+     * @return void
+     */
     public function index(Request $request)
     {
 
@@ -40,5 +46,21 @@ class OrderController extends Controller
                 ])
             ->values(),
         ]);
+    }
+
+
+    public function show(Order $order)
+    {
+        return Inertia::render('Admin/Orders/Show');
+    }
+
+    public function update(Order $order, OrderStatusRequest $request)
+    {
+        $newStatus = OrderStatus::from($request->status);
+
+        $order->transitionTo($newStatus);
+
+        return back()->with('success', 'Status changed to '. $newStatus->value);
+
     }
 }

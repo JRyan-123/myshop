@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use App\Exceptions\InvalidTransitionException;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,11 +49,23 @@ class Order extends Model
                 ->orWhere('shipping_address->phone', 'like', "%{$search}%");
         });
     }
+
     public function scopeStatus($query, $status)
     {
         if (!$status) {
             return $query;
         }
         return $query->where('status', $status);
+    }
+
+    public function transitionTo(OrderStatus $newStatus)
+    {
+        if (!in_array($newStatus, $this->status->allowedTransitions())) {
+            throw new InvalidTransitionException("The transition is invalid!");
+        }
+
+         $this->update([
+            'status' => $newStatus,
+        ]);
     }
 }

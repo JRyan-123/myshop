@@ -5,6 +5,7 @@ import { LogOut } from 'lucide-vue-next';
 import { ref } from 'vue'
 
 import { usePage } from '@inertiajs/vue3'
+import Flashtoast from '@/Components/Layout/Flashtoast.vue';
 
 const page = usePage()
 
@@ -32,6 +33,7 @@ const sidebarOpen = ref(false)
 
 <template>
     <Head title="Admin" />
+    <Flashtoast />
     <div class="min-h-screen bg-[#F4F4F2] text-[#1B1B1F]">
         <!-- Mobile overlay -->
         <div v-if="sidebarOpen" class="fixed inset-0 z-30 bg-black/30 lg:hidden" @click="sidebarOpen = false" />
