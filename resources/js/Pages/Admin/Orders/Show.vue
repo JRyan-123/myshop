@@ -3,6 +3,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { formatPrice } from '@/utils/FormatPrice'
 import { statusStyles } from '@/utils/statusStyles'
 import { router } from "@inertiajs/vue3";
+import { ref } from 'vue';
 
 defineOptions({
     layout: AdminLayout
@@ -15,11 +16,13 @@ const props = defineProps({
 })
 
 const order = props.order.data
+const selectedStatus = ref(order.status.value)
 
-const updateStatus = (order, status) => {
+const saveStatus = () => {
+
     router.patch(
         route('admin.orders.update', order.id),{
-            status,
+            status: selectedStatus.value,
         },
         {
             preserveState: false,
@@ -75,7 +78,7 @@ const updateStatus = (order, status) => {
                 <ul class="mt-4 divide-y divide-black/5">
                     <li v-for="item in order.order_items" :key="item.id"
                         class="flex items-center gap-4 py-4 first:pt-0">
-                        <div class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
+                        <div class="relative h-16 w-12 shrink-0 overflow-hidden rounded-lg shadow-sm">
                             <img :src="`/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
                                 alt="" />
                         </div>
@@ -120,13 +123,13 @@ const updateStatus = (order, status) => {
                 <label class="mt-4 block text-xs font-medium uppercase tracking-wide text-[#1B1B1F]/50">
                     Update status
                 </label>
-                <select :value="order.status.value"
+                <select v-model="selectedStatus"
                     class="mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none transition focus:border-[#B08D57]">
-                    <option :value="order.status.value" disabled>{{ order.status.label }}</option>
-                    <option v-for="s in order.status.transitions" :key="s" :value="s">{{ s.label }}</option>
+                    <option :value="order.status.value" disabled hidden>{{ order.status.label }}</option>
+                    <option v-for="s in order.status.transitions" :key="s.value" :value="s.value">{{ s.label }}</option>
                 </select>
 
-                <button @click="updateStatus(order, $event.target.value)"
+                <button @click="saveStatus"
                     class="mt-4 w-full rounded-full bg-[#1B1B1F] py-2.5 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
                     Save status
                 </button>

@@ -43,7 +43,6 @@ const updateStatus = (order, status) => {
             preserveScroll: true,
         }
     )
-
 }
 
 </script>
@@ -95,7 +94,7 @@ const updateStatus = (order, status) => {
                         <select :value="order.status.value" @change="updateStatus(order, $event.target.value)"
                             class="rounded-full border-0 px-2.5 py-1 text-xs font-medium outline-none w-full"
                             :class="statusStyles[order.status.value]">
-                            <option :value="order.status.value">
+                            <option :value="order.status.value" hidden>
                                 {{ order.status.label }}
 
                             </option>
