@@ -37,9 +37,7 @@ const saveStatus = () => {
 
 <template>
 
-    <template>
-        <h1 class="font-serif text-lg font-semibold">Order #{{ order.id }}</h1>
-    </template>
+
 
     <a href="/admin/orders" class="text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
         ← Back to orders

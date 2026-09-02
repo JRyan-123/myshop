@@ -50,9 +50,6 @@ const updateStatus = (order, status) => {
 
 <template>
 
-    <template>
-        <h1 class="font-serif text-lg font-semibold">Orders</h1>
-    </template>
 
     <!-- Toolbar -->
     <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
