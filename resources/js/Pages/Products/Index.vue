@@ -24,11 +24,11 @@ const routerOptions = {
 
 const searchProducts = () => {
     router.get(
-        route("products.index"),
+        route("products.index",
         {
             search: search.value,
             category: props.filters.category,
-        },
+        }),
         routerOptions
 
     );
