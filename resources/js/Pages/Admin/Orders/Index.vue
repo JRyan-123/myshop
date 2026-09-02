@@ -1,4 +1,5 @@
 <script setup>
+import Toolbar from '@/Components/Admin/Toolbar.vue';
 import Pagination from '@/Components/Products/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { formatPrice } from '@/utils/FormatPrice'
@@ -55,18 +56,8 @@ const updateStatus = (order, status) => {
 
     <!-- Toolbar -->
     <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex flex-wrap items-center gap-3">
-            <input v-model="search" type="text" placeholder="Search order # or customer..."
-                class="w-56 rounded-lg border border-black/10 bg-white px-4 py-2 text-sm outline-none transition focus:border-[#B08D57]" />
-            <select v-model="status"
-                class="rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none transition focus:border-[#B08D57]">
-                <option value="">All</option>
-                <option v-for="s in props.statuses" :key="s" :value="s.value">{{ s.label }}</option>
-            </select>
-            <button @click="searchProducts" class=" rounded-lg bg-[#1B1B1F] px-4 py-2 text-white text-sm">
-                Search
-            </button>
-        </div>
+        <Toolbar v-model:search="search" v-model:select="status" :option="props.statuses"
+            @search="searchProducts" placeholder="Search for orders.."/>
     </div>
 
     <!-- Table -->
