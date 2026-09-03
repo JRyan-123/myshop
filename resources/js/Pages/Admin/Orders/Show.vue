@@ -77,7 +77,7 @@ const saveStatus = () => {
                     <li v-for="item in order.order_items" :key="item.id"
                         class="flex items-center gap-4 py-4 first:pt-0">
                         <div class="relative h-16 w-12 shrink-0 overflow-hidden rounded-lg shadow-sm">
-                            <img :src="`/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
+                            <img :src="`/storage/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
                                 alt="" />
                         </div>
                         <div class="flex flex-1 items-center justify-between text-sm">
