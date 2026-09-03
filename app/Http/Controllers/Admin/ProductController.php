@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ProductStoreRequest;
+use App\Http\Requests\Admin\ProductRequest;
+
 use App\Http\Resources\ProductResource;
 use App\Interfaces\Admin\ProductInterface;
 use App\Models\Category;
@@ -18,6 +19,8 @@ class ProductController extends Controller
     public function __construct(
         protected ProductService $product_service
     ) {}
+
+
 
     /**
      * handles books
@@ -52,9 +55,23 @@ class ProductController extends Controller
      *
      * @return void
      */
-    public function edit()
+    public function edit(Product $product)
     {
-        return Inertia::render('Admin/Products/Edit');
+        return Inertia::render('Admin/Products/Edit', [
+            'product' => ProductResource::make($product),
+            'categories' => Category::orderBy('name')
+                ->get(['id', 'name', 'slug']),
+        ]);
+    }
+
+
+
+    public function update(ProductRequest $request, Product $product)
+    {
+        $this->product_service->updateBook($product, $request->validated());
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Book updated successfully!');
     }
 
 
@@ -77,14 +94,14 @@ class ProductController extends Controller
     /**
      * handles save book
      *
-     * @param ProductStoreRequest $request
+     * @param ProductRequest $request
      * @return void
      */
-    public function store(ProductStoreRequest $request)
+    public function store(ProductRequest $request)
     {
         $this->product_service->createBook($request->validated());
 
         return redirect()->route('admin.products.index')
-                ->with('success', 'Created new book successfully!');
+            ->with('success', 'Created new book successfully!');
     }
 }
