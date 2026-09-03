@@ -14,7 +14,7 @@ const props = defineProps({
     featuredBooks: Array,
     categories: Array,
 })
-console.log(props.featuredBooks);
+
 
 const shelf = [
     { title: 'The Long Tide', color: 'bg-[#5B7B6E]' },
