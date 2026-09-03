@@ -84,7 +84,7 @@ const stockRule = (item) => {
                     <li v-for="item in cartItems" :key="item.id" class="flex gap-4 py-6 first:pt-0">
                         <Link :href="route('products.show', item.product_id)"
                             class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg shadow-sm">
-                            <img :src="`/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
+                            <img :src="`/storage/${item.image_path}`" class="absolute inset-0 h-full w-full object-cover"
                                 alt="" />
                         </Link>
 

@@ -11,7 +11,6 @@ const props = defineProps({
 })
 const book = props.product.data
 const related = props.recommendedProducts
-console.log(related)
 
 const qty = ref(1)
 function decrement() {
@@ -50,7 +49,7 @@ const addToCart = (productId, quantity) => {
                     <div
                         class="group relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition hover:shadow-lg">
                         <!-- Book cover -->
-                        <img :src="`/${book.image_path}`" :alt="book.title"
+                        <img :src="`/storage/${book.image_path}`" :alt="book.title"
                             class="h-full w-full object-cover transition group-hover:scale-105" />
 
                         <!-- Dark overlay -->
@@ -115,7 +114,7 @@ const addToCart = (productId, quantity) => {
                         <Link :href="route('products.show', book)"
                             class="group relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition hover:shadow-lg">
                             <!-- Book cover -->
-                            <img :src="`/${book.image_path}`" :alt="book.title"
+                            <img :src="`/storage/${book.image_path}`" :alt="book.title"
                                 class="h-full w-full object-cover transition group-hover:scale-105" />
 
                             <!-- Dark overlay -->

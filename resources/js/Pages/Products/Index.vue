@@ -130,7 +130,7 @@ const addToCart = (productId) => {
                     <Link :href="route('products.show', book.slug)"
                         class="group relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition hover:shadow-lg">
                         <!-- Book cover -->
-                        <img :src="`/${book.image_path}`" :alt="book.title"
+                        <img :src="`storage/${book.image_path}`" :alt="book.title"
                             class="h-full w-full object-cover transition group-hover:scale-105" />
 
                         <!-- Dark overlay -->
