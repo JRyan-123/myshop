@@ -80,7 +80,7 @@ function deleteBook(id) {
                     <td class="px-5 py-3">
                         <div class="flex items-center gap-3">
                             <div class="relative h-16 w-12 shrink-0 overflow-hidden rounded-lg shadow-sm">
-                                <img :src="`/${book.image_path}`" class="absolute inset-0 h-full w-full object-cover"
+                                <img :src="`/storage/${book.image_path}`" class="absolute inset-0 h-full w-full object-cover"
                                     alt="" />
                             </div>
                             <div>
