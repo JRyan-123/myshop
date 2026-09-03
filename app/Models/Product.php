@@ -51,7 +51,14 @@ class Product extends Model
             return $query;
         }
 
-        return $query->whereHas('category',
-            fn($query) => $query->where('slug', $category));
+        return $query->whereHas(
+            'category',
+            fn($query) => $query->where('slug', $category)
+        );
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

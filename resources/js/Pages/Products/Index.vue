@@ -127,7 +127,7 @@ const addToCart = (productId) => {
                 <article v-for="book in props.products.data" :key="book.id" class="group flex flex-col">
 
                     <!-- Book cover -->
-                    <Link :href="route('products.show', book)"
+                    <Link :href="route('products.show', book.slug)"
                         class="group relative block aspect-[3/4] overflow-hidden rounded-xl shadow-sm transition hover:shadow-lg">
                         <!-- Book cover -->
                         <img :src="`/${book.image_path}`" :alt="book.title"
