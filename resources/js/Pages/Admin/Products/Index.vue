@@ -98,10 +98,10 @@ function deleteBook(id) {
                     </td>
                     <td class="px-5 py-3">
                         <div class="flex justify-end gap-2">
-                            <a :href="`/admin/prod/${book.id}/edit`"
+                            <Link :href="route('admin.products.edit',  book.slug)"
                                 class="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:text-[#B08D57]">
                                 Edit
-                            </a>
+                            </Link>
                             <button @click="deleteBook(book.id)"
                                 class="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-medium text-[#8C3B3B] transition hover:border-[#8C3B3B] hover:bg-[#8C3B3B]/10">
                                 Delete
