@@ -14,8 +14,7 @@ const props = defineProps({
     categories: Object,
     filters: Object,
 })
-// In your real app this comes from a paginated Inertia prop, e.g.
-// defineProps({ books: Object }) // Laravel paginator
+
 const books = props.products.data
 
 const search = ref(props.filters.search ?? "");
@@ -32,18 +31,23 @@ const searchProducts = () => {
     )
 }
 
-
-
-
 function stockStyle(stock) {
     if (stock === 0) return 'bg-[#8C3B3B]/15 text-[#8C3B3B]'
     if (stock <= 5) return 'bg-[#B08D57]/15 text-[#B08D57]'
     return 'bg-[#5B7B6E]/15 text-[#5B7B6E]'
 }
 
-function deleteBook(id) {
-    // Replace with a confirm dialog + router.delete(`/admin/books/${id}`)
-    books.value = books.value.filter((b) => b.id !== id)
+const deleteBook = (book) => {
+    if (!confirm('Delete this book? This cannot be undone.')) return
+    router.delete(route('admin.products.destroy', {
+        product: book.slug,
+        page: props.products.meta.current_page,
+        search: search.value,
+        category: category.value,
+    }), {
+        preserveState: false,
+        preserveScroll: true,
+    })
 }
 </script>
 
@@ -98,11 +102,16 @@ function deleteBook(id) {
                     </td>
                     <td class="px-5 py-3">
                         <div class="flex justify-end gap-2">
-                            <Link :href="route('admin.products.edit',  book.slug)"
+                            <Link :href="route('admin.products.edit', {
+                                product: book.slug,
+                                page: props.products.meta.current_page,
+                                search: search.value,
+                                category: category.value,
+                            })"
                                 class="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:text-[#B08D57]">
                                 Edit
                             </Link>
-                            <button @click="deleteBook(book.id)"
+                            <button @click="deleteBook(book)"
                                 class="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-medium text-[#8C3B3B] transition hover:border-[#8C3B3B] hover:bg-[#8C3B3B]/10">
                                 Delete
                             </button>

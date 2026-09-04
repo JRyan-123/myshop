@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { useForm } from '@inertiajs/vue3'
+import { Link, router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 defineOptions({
     layout: AdminLayout
@@ -8,11 +8,13 @@ defineOptions({
 
 const props = defineProps({
     product : Object,
-    categories : Object
+    categories : Object,
+    filters: Object,
 })
 
 const categories = props.categories
 const product = props.product.data
+const filters = props.filters ?? {}
 
 
 const form = useForm({
@@ -37,13 +39,25 @@ const onCoverChange = (e) => {
 }
 
 const saveBook = () => {
-  form.put(route('admin.products.update', product.slug))
+  form.put(route('admin.products.update', {
+    product: product.slug,
+    page: filters.page,
+    search: filters.search,
+    category: filters.category,
+  }))
 }
 
-function deleteBook() {
+const deleteBook = () => {
   if (!confirm('Delete this book? This cannot be undone.')) return
-  // Replace with router.delete(`/admin/books/${book.id}`)
-  console.log('deleting book')
+  router.delete(route('admin.products.destroy', {
+    product: product.slug,
+    page: filters.page,
+    search: filters.search,
+    category: filters.category,
+  }), {
+    preserveState: false,
+    preserveScroll: true,
+  })
 }
 </script>
 
@@ -51,9 +65,9 @@ function deleteBook() {
 
 
 
-    <a href="/admin/products" class="text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
+    <Link :href="route('admin.products.index', filters)" class="text-sm font-medium text-[#1B1B1F]/60 hover:text-[#B08D57]">
       ← Back to books
-    </a>
+    </Link>
 
     <form @submit.prevent="saveBook" class="mt-4 grid gap-6 lg:grid-cols-3">
       <!-- Left: form fields -->

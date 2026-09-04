@@ -55,22 +55,37 @@ class ProductController extends Controller
      *
      * @return void
      */
-    public function edit(Product $product)
+    public function edit(Request $request, Product $product)
     {
         return Inertia::render('Admin/Products/Edit', [
             'product' => ProductResource::make($product),
             'categories' => Category::orderBy('name')
                 ->get(['id', 'name', 'slug']),
+            'filters' => $request->only([
+                'page',
+                'search',
+                'category',
+            ]),
         ]);
     }
 
 
-
+    /**
+     * handles update book
+     *
+     * @param ProductRequest $request
+     * @param Product $product
+     * @return void
+     */
     public function update(ProductRequest $request, Product $product)
     {
         $this->product_service->updateBook($product, $request->validated());
 
-        return redirect()->route('admin.products.index')
+        return redirect()->route('admin.products.index', $request->only([
+            'page',
+            'search',
+            'category',
+        ]))
             ->with('success', 'Book updated successfully!');
     }
 
@@ -103,5 +118,24 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Created new book successfully!');
+    }
+
+
+    /**
+     * delete book
+     *
+     * @param Product $product
+     * @return void
+     */
+    public function destroy(Request $request, Product $product)
+    {
+        $product->delete();
+
+        return redirect()->route('admin.products.index', $request->only([
+            'page',
+            'search',
+            'category',
+        ]))
+            ->with('success', 'Book deleted successfully!');
     }
 }

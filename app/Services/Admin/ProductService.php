@@ -16,6 +16,14 @@ class ProductService
         //
     }
 
+
+
+    /**
+     * create a new book
+     *
+     * @param array $data
+     * @return Product
+     */
     public function createBook(array $data)
     {
 
@@ -30,6 +38,15 @@ class ProductService
         return Product::create($data);
     }
 
+
+
+    /**
+     * Update a book
+     *
+     * @param Product $product
+     * @param array $data
+     * @return void
+     */
     public function updateBook(Product $product, array $data)
     {
         $data['slug'] = Str::slug($data['title']);
