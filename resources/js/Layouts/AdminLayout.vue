@@ -11,7 +11,8 @@ const page = usePage()
 
 const getPageTitle = () => {
     const titles = [
-
+        ['/admin/products/create', 'Create Book'],
+        ['/admin/products/edit', 'Edit Book'],
         ['/admin/products', 'Books'],
         ['/admin/orders', 'Orders'],
         ['/admin/categories', 'Categories'],
