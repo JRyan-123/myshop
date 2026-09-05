@@ -34,6 +34,7 @@ class ProductController extends Controller
             ->with('category')
             ->search($request->search)
             ->category($request->category)
+            ->orderBy('stock')
             ->paginate(10)
             ->withQueryString();
 

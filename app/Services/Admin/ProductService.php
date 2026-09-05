@@ -31,7 +31,6 @@ class ProductService
 
         if (isset($data['image'])) {
             $data['image_path'] = $data['image']->store('books', 'public');
-
             unset($data['image']);
         }
 
@@ -53,9 +52,10 @@ class ProductService
 
         if (isset($data['image'])) {
             $data['image_path'] = $data['image']->store('books', 'public');
-
             unset($data['image']);
         }
+
+        $data['is_active'] = $data['stock'] > 0;
 
         $product->update($data);
 
