@@ -48,14 +48,14 @@ const shelf = [
                     cart, checkout in minutes.
                 </p>
                 <div class="mt-8 flex flex-wrap gap-4">
-                    <a href="/books"
+                    <Link :href="route('products.index')"
                         class="rounded-full bg-[#1B1B1F] px-6 py-3 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
                         Browse books
-                    </a>
-                    <a href="#featured-books"
+                    </Link>
+                    <Link href="#featured-books"
                         class="rounded-full border border-[#1B1B1F]/20 px-6 py-3 text-sm font-medium transition hover:border-[#B08D57] hover:text-[#B08D57]">
                         See best sellers
-                    </a>
+                </Link>
                 </div>
             </div>
 
