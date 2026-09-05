@@ -1,11 +1,13 @@
 <script setup>
+import Search from '@/Components/Admin/Search.vue';
+import Select from '@/Components/Admin/Select.vue';
 import Toolbar from '@/Components/Admin/Toolbar.vue';
 import Pagination from '@/Components/Products/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { formatPrice } from '@/utils/FormatPrice'
 import { statusStyles } from '@/utils/statusStyles'
 import { Link, router } from "@inertiajs/vue3";
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 
 defineOptions({
@@ -19,20 +21,25 @@ const props = defineProps({
 })
 
 
-const orders = props.orders.data ?? []
+const orders = computed(() => props.orders.data ?? [])  
 const search = ref(props.filters.search ?? "");
 const status = ref(props.filters.status ?? "");
 
+let timeout
 
-
-const searchProducts = () => {
-    router.get(
-        route('admin.orders.index', {
-            search: search.value,
-            status: status.value
+watch([search, status], () => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+        router.get(route('admin.orders.index'), {
+            search: search.value || undefined,
+            status: status.value || undefined,
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
         })
-    )
-}
+    }, 300)
+})
 
 const updateStatus = (order, status) => {
     router.patch(
@@ -53,8 +60,10 @@ const updateStatus = (order, status) => {
 
     <!-- Toolbar -->
     <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <Toolbar v-model:search="search" v-model:select="status" :option="props.statuses"
-            @search="searchProducts" placeholder="Search for orders.."/>
+        <div class="flex flex-wrap items-center gap-3">
+            <Search v-model="search" placeholder="Search orders..." />
+            <Select v-model="status" :option="props.statuses" value="value" label="label" defaultOption="All statuses" />
+        </div>
     </div>
 
     <!-- Table -->
@@ -114,7 +123,7 @@ const updateStatus = (order, status) => {
     </div>
 
     <p class="mt-4 text-sm text-[#1B1B1F]/50">
-        Showing {{ orders.length }} of {{ orders.length }} orders
+        Showing {{ orders.length }} of {{ props.orders.meta.total }} orders
     </p>
     <Pagination :metaLinks="props.orders.meta.links" />
 

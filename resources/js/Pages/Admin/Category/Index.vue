@@ -3,6 +3,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { ref, computed, watch } from 'vue'
 import { router, useForm } from '@inertiajs/vue3'
 import Pagination from '@/Components/Products/Pagination.vue'
+import Search from '@/Components/Admin/Search.vue'
 
 
 defineOptions({
@@ -13,15 +14,16 @@ const props = defineProps({
   filters: Object
 })
 
-const categories = computed(() => props.categories.data) 
+const categories = computed(() => props.categories.data)
 
 const search = ref(props.filters?.search ?? '')
 
 let searchTimeout
-watch(search, (value) => {
+watch(search, () => {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
-    router.get(route('admin.categories.index'), { search: value || undefined }, {
+    router.get(route('admin.categories.index'),
+      { search: search.value || undefined }, {
       preserveState: true,
       preserveScroll: true,
       replace: true,
@@ -75,9 +77,7 @@ const deleteCategory = (id) => {
 
   <!-- Toolbar -->
   <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
-    <input v-model="search" type="text" placeholder="Search categories..."
-      class="w-56 rounded-lg border border-black/10 bg-white px-4 py-2 text-sm outline-none transition focus:border-[#B08D57]" />
-
+    <Search v-model="search" placeholder="Search categories..." />
     <button @click="showAddForm = !showAddForm"
       class="rounded-full bg-[#1B1B1F] px-5 py-2.5 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
       + Add category
@@ -118,9 +118,9 @@ const deleteCategory = (id) => {
           <td class="px-5 py-3">
             <div class="flex items-center gap-3">
               <span :class="cat.color" class="h-3 w-3 shrink-0 rounded-full" />
-              <input v-if="editingId === cat.id" v-model="editForm.name" @keyup.enter="saveEdit(cat)" @blur="saveEdit(cat)"
-                type="text" class="rounded-lg border border-[#B08D57] bg-white px-2 py-1 text-sm outline-none"
-                autofocus />
+              <input v-if="editingId === cat.id" v-model="editForm.name" @keyup.enter="saveEdit(cat)"
+                @blur="saveEdit(cat)" type="text"
+                class="rounded-lg border border-[#B08D57] bg-white px-2 py-1 text-sm outline-none" autofocus />
               <span v-if="editingId === cat.id && editForm.errors.name" class="text-sm text-red-600">
                 {{ editForm.errors.name }}
               </span>

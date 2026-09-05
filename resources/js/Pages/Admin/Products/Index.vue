@@ -1,10 +1,12 @@
 <script setup>
+import Search from '@/Components/Admin/Search.vue'
+import Select from '@/Components/Admin/Select.vue'
 import Toolbar from '@/Components/Admin/Toolbar.vue'
 import Pagination from '@/Components/Products/Pagination.vue'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { formatPrice } from '@/utils/FormatPrice'
 import { Link, router } from '@inertiajs/vue3'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 defineOptions({
     layout: AdminLayout,
@@ -16,22 +18,30 @@ const props = defineProps({
 })
 
 const books = props.products.data
+const categories = props.categories
 
 const search = ref(props.filters.search ?? "");
 const category = ref(props.filters.category ?? "");
-const categories = props.categories
 
-const searchProducts = () => {
-    router.get(
-        route('admin.products.index',
-        {
-            search : search.value,
-            category : category.value
+
+let timeout
+
+watch([search, category], () => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+        router.get(route('admin.products.index'), {
+            search: search.value || undefined,
+            category: category.value || undefined,
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
         })
-    )
-}
+    }, 300)
+})
 
-function stockStyle(stock) {
+
+const stockStyle = (stock) => {
     if (stock === 0) return 'bg-[#8C3B3B]/15 text-[#8C3B3B]'
     if (stock <= 5) return 'bg-[#B08D57]/15 text-[#B08D57]'
     return 'bg-[#5B7B6E]/15 text-[#5B7B6E]'
@@ -57,9 +67,11 @@ const deleteBook = (book) => {
 
     <!-- Toolbar -->
     <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <Toolbar v-model:search="search" v-model:select="category" :option="categories" value="name" label="name"
-            @search="searchProducts" placeholder="Search for books or authors"/>
+        <div class="flex flex-wrap items-center gap-3">
+            <Search v-model="search" placeholder="Search books or authors..." />
+            <Select v-model="category" :option="categories" value="slug" label="name" defaultOption="All categories" />
 
+        </div>
 
         <Link :href="route('admin.products.create')"
             class="rounded-full bg-[#1B1B1F] px-5 py-2.5 text-sm font-medium text-[#F7F2E7] transition hover:bg-[#B08D57]">
@@ -84,8 +96,8 @@ const deleteBook = (book) => {
                     <td class="px-5 py-3">
                         <div class="flex items-center gap-3">
                             <div class="relative h-16 w-12 shrink-0 overflow-hidden rounded-lg shadow-sm">
-                                <img :src="`/storage/${book.image_path}`" class="absolute inset-0 h-full w-full object-cover"
-                                    alt="" />
+                                <img :src="`/storage/${book.image_path}`"
+                                    class="absolute inset-0 h-full w-full object-cover" alt="" />
                             </div>
                             <div>
                                 <p class="font-medium">{{ book.title }}</p>
