@@ -18,14 +18,12 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
+// public routes
 Route::get('/', [HomeController::class, 'index']);
-
-Route::get('/products', function () {
-    return Inertia::render('Products/Index');
-})->middleware(['auth', 'verified'])->name('products.index');
-
-
 Route::resource('/products', CustomerProductController::class);
+
+
 
 //customers
 Route::middleware('auth')->group(function () {
@@ -33,10 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/orders', CustomerOrderController::class);
-    Route::resource('/carts', CartController::class);
-    Route::resource('/cart-items', CartItemController::class);
-    Route::resource('/checkout', CheckoutController::class);
+    Route::resource('/orders', CustomerOrderController::class)->only(['index', 'show', 'store']);
+    Route::resource('/carts', CartController::class)->only(['index', 'store']);
+    Route::resource('/cart-items', CartItemController::class)->only(['update', 'destroy']);
+    Route::resource('/checkout', CheckoutController::class)->only('index');
     Route::resource('/payments', PaymentWebhookController::class);
 
 });
@@ -45,9 +43,11 @@ Route::middleware('auth')->group(function () {
 
 //admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function ()  {
-    Route::resource('/',AdminController::class);
-    Route::resource('/products', AdminProductController::class);
-    Route::resource('/categories', CategoryController::class);
-    Route::resource('/orders', AdminOrderController::class);
+    Route::resource('/',AdminController::class)->only('index');
+    Route::resource('/products', AdminProductController::class)->except(['show']);
+    Route::resource('/categories', CategoryController::class)->except(['show']);
+    Route::resource('/orders', AdminOrderController::class)->only(['index', 'show', 'update']);
 });
+
+
 require __DIR__.'/auth.php';
