@@ -22,6 +22,7 @@ const form = useForm({
     street: '',
     barangay: '',
     city: '',
+    selectedPayment: ''
 
 })
 
@@ -29,7 +30,7 @@ const form = useForm({
 const paymentMethods = [
     { id: 'gcash', label: 'GCash', color: 'bg-[#0072CE]', initials: 'GC' },
     { id: 'paymaya', label: 'PayMaya', color: 'bg-[#2CB34A]', initials: 'PM' },
-    { id: 'cod', label: 'Cash on Delivery', color: 'bg-[#B08D57]', initials: '₱' },
+    { id: 'card', label: 'Card', color: 'bg-[#B08D57]', initials: 'C' },
 ]
 
 

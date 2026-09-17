@@ -28,6 +28,7 @@ class CheckoutRequest extends FormRequest
             'city' => ['required', 'string', 'max:50'],
             'barangay' => ['required', 'string', 'max:50'],
             'street' => ['required', 'string', 'max:50'],
+            'selectedPayment' => ['required', 'string', 'in:gcash,paymaya,card'],
         ];
     }
 }
