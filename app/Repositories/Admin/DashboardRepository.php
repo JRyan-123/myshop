@@ -14,7 +14,7 @@ class DashboardRepository implements DashboardInterface
 
     public function getMonthlySales($start, $end)
     {
-        return Order::where('status', OrderStatus::Delivered)
+        return Order::where('status', OrderStatus::Completed)
             ->whereBetween('created_at', [$start, $end])
             ->sum('total');
     }
