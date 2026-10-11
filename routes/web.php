@@ -22,7 +22,8 @@ use Inertia\Inertia;
 // public routes
 Route::get('/', [HomeController::class, 'index']);
 Route::resource('/products', CustomerProductController::class);
-
+Route::get('/checkout/success', [CustomerOrderController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/cancel', [CustomerOrderController::class, 'cancel'])->name('checkout.cancel');
 
 
 //customers

@@ -20,6 +20,7 @@ class OrderService
         protected CartInterface $cart_interface,
         protected CheckoutInterface $checkout_interface,
         protected OrderInterface $order_interface,
+        protected PaymongoService $paymongo,
     ) {}
 
 
@@ -30,7 +31,7 @@ class OrderService
      *
      * @param integer $userId
      * @param array $data
-     * @return void
+     * @return string
      */
     public function placeOrder(int $userId, array $data)
     {
@@ -100,7 +101,9 @@ class OrderService
             // delete cart
             $this->cart_interface->clearCart($cart);
 
-            return $order;
+            $session = $this->paymongo->createSession($order, $data['selectedPayment']);
+
+            return $session;
         });
     }
 
@@ -109,7 +112,7 @@ class OrderService
     /**
      * random order number
      *
-     * @return void
+     * @return string
      */
     protected function generateOrderNumber()
     {

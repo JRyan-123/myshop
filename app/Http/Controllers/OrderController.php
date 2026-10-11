@@ -17,7 +17,7 @@ class OrderController extends Controller
     public function __construct(
         protected OrderService $order_service,
         protected OrderInterface $order_interface,
-    ) { }
+    ) {}
 
 
 
@@ -41,17 +41,17 @@ class OrderController extends Controller
      * save orders
      *
      * @param CheckoutRequest $request
-     * @return void
+     * @return string
      */
     public function store(CheckoutRequest $request)
     {
-        $this->order_service->placeOrder(
+        $session = $this->order_service->placeOrder(
             auth()->id(),
             $request->validated()
-            );
+        );
+        $checkoutUrl = $session['attributes']['checkout_url'];
 
-        return redirect()->route('orders.index');
-
+        return Inertia::location($checkoutUrl);
     }
 
 
@@ -75,5 +75,13 @@ class OrderController extends Controller
         ]);
     }
 
+    public function success()
+    {
+        return 'ssuccess';
+    }
 
+    public function cancel()
+    {
+        return 'cancel';
+    }
 }
