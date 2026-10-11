@@ -11,6 +11,7 @@ enum OrderStatus: string
     case Shipped = 'shipped';
     case Completed = 'completed';
     case Cancelled = 'cancelled';
+    case Failed = 'failed';
 
     public function label(): string
     {
@@ -21,6 +22,7 @@ enum OrderStatus: string
             self::Shipped => 'Shipped',
             self::Completed => 'Completed',
             self::Cancelled => 'Cancelled',
+            self::Failed => 'Failed',
         };
     }
 
@@ -30,6 +32,7 @@ enum OrderStatus: string
             self::Pending => [
                 self::Paid,
                 self::Cancelled,
+                self::Failed,
             ],
 
             self::Paid => [
@@ -39,7 +42,6 @@ enum OrderStatus: string
             
             self::Processing => [
                 self::Shipped,
-                self::Cancelled,
             ],
 
             self::Shipped => [
@@ -47,7 +49,8 @@ enum OrderStatus: string
             ],
 
             self::Completed,
-            self::Cancelled => []
+            self::Cancelled,
+            self::Failed => []
         };
     }
 }
