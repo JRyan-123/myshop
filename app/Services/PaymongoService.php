@@ -21,13 +21,16 @@ class PaymongoService
             ->post('https://api.paymongo.com/v1/checkout_sessions', [
                 'data' => [
                     'attributes' => [
-                        'line_items' => $order->orderItems->map(fn ($item) => [ 
-                            
-                                'name' => $item->product->name,
-                                'amount' => $item->product->price * 100, 
-                                'currency' => 'PHP',
-                                'quantity' => $item->quantity,
-                            
+                        'line_items' => $order->orderItems->map(fn($item) => [
+
+                            'name' => $item->product->name,
+                            'amount' => $item->product->price * 100,
+                            'currency' => 'PHP',
+                            'quantity' => $item->quantity,
+                            'images' => [
+                                asset('storage/' . $item->product->image_path),
+                            ],
+
                         ])->all(),
                         'reference_number' => $order->order_number,
                         'metadata' => [
@@ -40,5 +43,17 @@ class PaymongoService
                 ],
             ]);
         return $response->json('data');
+    }
+
+    public function createPayment(Order $order, array $session)
+    {
+        $order->payment()->create([
+            'paymongo_checkout_session_id' => $session['id'],
+            'paymongo_payment_id' => null,
+            'status' => 'pending',
+            'amount' => $order->total,
+            'currency' => 'PHP',
+            'payment_method_type' => $session['attributes']['payment_method_types'][0],
+        ]);
     }
 }

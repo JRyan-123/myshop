@@ -77,11 +77,11 @@ class OrderController extends Controller
 
     public function success()
     {
-        return 'ssuccess';
+        return Inertia::render('Checkout/SuccessPage');
     }
 
     public function cancel()
     {
-        return 'cancel';
+        return Inertia::render('Checkout/CancelPage');
     }
 }
