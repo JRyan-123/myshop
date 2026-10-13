@@ -42,6 +42,7 @@ enum OrderStatus: string
             
             self::Processing => [
                 self::Shipped,
+                self::Cancelled,
             ],
 
             self::Shipped => [
