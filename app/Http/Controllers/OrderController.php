@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatus;
+use App\Enums\PaymentStatus;
 use App\Http\Requests\CheckoutRequest;
 use App\Http\Resources\OrderResource;
 use App\Interfaces\OrderInterface;
@@ -75,13 +76,48 @@ class OrderController extends Controller
         ]);
     }
 
-    public function success()
+    private function findUserOrder(Request $request)
     {
-        return Inertia::render('Checkout/SuccessPage');
+        return Order::with(['orderItems.product', 'payment'])
+            ->where('user_id', $request->user()->id)
+            ->findOrFail($request->query('order'));
     }
 
-    public function cancel()
+    public function success(Request $request)
     {
-        return Inertia::render('Checkout/CancelPage');
+        return Inertia::render('Checkout/SuccessPage',[
+            'order' => $this->findUserOrder($request)
+        ]);
     }
+
+    public function cancel(Request $request)
+    {
+        return Inertia::render('Checkout/CancelPage',[
+            'order' => $this->findUserOrder($request)
+        ]);
+    }
+
+    public function retryPayment(Order $order)
+    {
+        abort_unless($order->user_id === auth()->id(), 403, 'Unauthorized');
+        
+        $session = $this->order_service->retryPayment($order);
+
+        return Inertia::location($session['attributes']['checkout_url']);
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        abort_unless($order->user_id === auth()->id(), 403, 'Unauthorized');
+
+        if ($order->status !== OrderStatus::Pending) {
+            return redirect()->back()->with('error', 'Only pending orders can be cancelled.');
+        }
+
+        $order->update(['status' => OrderStatus::Cancelled]);
+        $order->payment()->update(['status' => PaymentStatus::Failed]);
+
+        return redirect()->route('orders.index')->with('success', 'Order has been cancelled successfully.');
+    }
+
 }

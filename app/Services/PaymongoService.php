@@ -37,8 +37,12 @@ class PaymongoService
                             'order_id' => $order->id,
                         ],
                         'payment_method_types' => [$paymentMethod],
-                        'success_url' => route('checkout.success'),
-                        'cancel_url' => route('checkout.cancel'),
+                        'success_url' => route('checkout.success', [
+                            'order' => $order->id,
+                        ]),
+                        'cancel_url' => route('checkout.cancel', [
+                            'order' => $order->id,
+                        ]),
                     ],
                 ],
             ]);

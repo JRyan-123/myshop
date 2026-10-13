@@ -22,8 +22,8 @@ use Inertia\Inertia;
 // public routes
 Route::get('/', [HomeController::class, 'index']);
 Route::resource('/products', CustomerProductController::class);
-Route::get('/checkout/success', [CustomerOrderController::class, 'success'])->name('checkout.success');
-Route::get('/checkout/cancel', [CustomerOrderController::class, 'cancel'])->name('checkout.cancel');
+
+
 
 
 //customers
@@ -38,17 +38,22 @@ Route::middleware('auth')->group(function () {
     Route::resource('/checkout', CheckoutController::class)->only('index');
     Route::resource('/payments', PaymentWebhookController::class);
 
+
+    Route::get('/checkout/success', [CustomerOrderController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/cancel', [CustomerOrderController::class, 'cancel'])->name('checkout.cancel');
+    Route::post('/checkout/{order}/retry-payment', [CustomerOrderController::class, 'retryPayment'])->name('orders.retry-payment');
+    Route::patch('/orders/{order}/cancel', [CustomerOrderController::class, 'cancelOrder'])->name('orders.cancel');
 });
 
 
 
 //admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function ()  {
-    Route::resource('/',AdminController::class)->only('index');
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('/', AdminController::class)->only('index');
     Route::resource('/products', AdminProductController::class)->except(['show']);
     Route::resource('/categories', CategoryController::class)->except(['show']);
     Route::resource('/orders', AdminOrderController::class)->only(['index', 'show', 'update']);
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
