@@ -11,7 +11,7 @@ class CheckoutController extends Controller
 {
     public function __construct(
         protected CheckoutService $checkout_service
-    ) { }
+    ) {}
 
     /**
      * cjeckout page with order summary and cart items
@@ -25,10 +25,13 @@ class CheckoutController extends Controller
         $cart = $data['cart'];
         $summary = $data['summary'];
 
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('carts.index');
+        }
+
         return Inertia::render('Checkout/Index', [
             'cart' => $cart ? CartResource::make($cart) : null,
             'summary' => $summary
         ]);
-
     }
 }
