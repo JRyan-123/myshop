@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { formatPrice } from '@/utils/FormatPrice';
 import { statusStyles } from '@/utils/statusStyles';
 import { Head, Link } from '@inertiajs/vue3';
+import { ReceiptText, RotateCcw, XCircle } from 'lucide-vue-next';
 
 
 defineOptions({
@@ -41,7 +42,8 @@ const orders = props.orders.data;
                             <p class="text-xs text-[#1B1B1F]/60">{{ order.date }}</p>
                         </div>
 
-                        <span class="rounded-full px-3 py-1 text-xs font-medium" :class="statusStyles[order.status.value]">
+                        <span class="rounded-full px-3 py-1 text-xs font-medium"
+                            :class="statusStyles[order.status.value]">
                             {{ order.status.label }}
                         </span>
                     </div>
@@ -52,11 +54,34 @@ const orders = props.orders.data;
 
                     <div class="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
                         <span class="font-medium">{{ formatPrice(order.total) }}</span>
+                        <div class="flex flex-wrap gap-2">
 
-                        <Link :href="route('orders.show', { order: order })"
-                            class="rounded-full border border-[#1B1B1F]/20 px-4 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">
-                            View order
-                        </Link>
+                            <!-- View order -->
+                            <Link :href="route('orders.show', { order: order })"
+                                class="inline-flex items-center gap-1.5 rounded-full border border-[#1B1B1F]/20 px-4 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:bg-black hover:text-white">
+                                <ReceiptText class="h-3.5 w-3.5" />
+                                View order
+                            </Link>
+                            
+
+                            <!-- Retry payment -->
+                            <Link v-if="order.status.value === 'pending'"
+                                :href="route('orders.retry-payment', { order: order })" method="post" as="button"
+                                class="inline-flex items-center gap-1.5 rounded-full border border-[#1B1B1F]/20 px-4 py-1.5 text-xs font-medium text-amber-700 transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">
+                                <RotateCcw class="h-3.5 w-3.5" />
+                                Retry payment
+                            </Link>
+
+
+
+                            <!-- Cancel order -->
+                            <Link v-if="order.status.value === 'processing' || order.status.value === 'pending'"
+                                :href="route('orders.cancel', { order: order })" method="patch" 
+                                class="inline-flex items-center gap-1.5 rounded-full border border-[#8C3B3B]/30 px-4 py-1.5 text-xs font-medium text-[#8C3B3B] transition hover:border-[#8C3B3B] hover:bg-[#8C3B3B] hover:text-white">
+                                <XCircle class="h-3.5 w-3.5" />
+                                Cancel order
+                            </Link>
+                        </div>
 
                     </div>
                 </li>

@@ -25,7 +25,7 @@ class CheckoutController extends Controller
         $cart = $data['cart'];
         $summary = $data['summary'];
 
-        if (!$cart || $cart->items->isEmpty()) {
+        if (!$cart || $cart->cartItems->isEmpty()) {
             return redirect()->route('carts.index');
         }
 

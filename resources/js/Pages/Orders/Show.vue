@@ -3,18 +3,19 @@ import OrderSummary from '@/Components/Cart/OrderSummary.vue';
 import { formatPrice } from '@/utils/FormatPrice';
 import { statusStyles } from '@/utils/statusStyles';
 import { Head, Link } from '@inertiajs/vue3'
+import { RotateCcw, XCircle } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 
 const props = defineProps({
     order: Object,
-    statuses : Object
+    statuses: Object
 })
 
 const order = props.order.data;
 
 const steps = computed(() => {
-    return Object.values(props.statuses).filter(status =>  status.value !== 'cancelled')
+    return Object.values(props.statuses).filter(status => status.value !== 'cancelled' && status.value !== 'failed');
 })
 
 const currentIndex = computed(() => {
@@ -25,6 +26,7 @@ const currentIndex = computed(() => {
 </script>
 
 <template>
+
     <Head title="Order"></Head>
 
     <div class="min-h-screen bg-[#F7F2E7] text-[#1B1B1F]">
@@ -53,8 +55,8 @@ const currentIndex = computed(() => {
                 <template v-for="(step, i) in steps" :key="step">
                     <div class="flex flex-col items-center">
                         <div class="flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium" :class="currentIndex >= i
-                                ? 'bg-[#1B1B1F] text-[#F7F2E7]'
-                                : 'bg-black/10 text-[#1B1B1F]/40'
+                            ? 'bg-[#1B1B1F] text-[#F7F2E7]'
+                            : 'bg-black/10 text-[#1B1B1F]/40'
                             ">
                             {{ i + 1 }}
                         </div>
@@ -65,8 +67,11 @@ const currentIndex = computed(() => {
                 </template>
             </div>
 
-            <div v-else>
-                cancelled
+            <div v-else class="mb-10 flex items-center gap-2">
+                <div
+                    class="inline-flex items-center gap-2 rounded-full bg-[#8C3B3B]/10 px-4 py-1.5 text-xs font-medium text-[#8C3B3B]">
+                    This order was cancelled
+                </div>
             </div>
 
 
@@ -98,7 +103,7 @@ const currentIndex = computed(() => {
                     <!-- payment method -->
                     <div class="rounded-2xl border border-black/10 bg-white/50 p-6">
                         <h2 class="font-serif text-lg font-semibold">Payment method</h2>
-                        <p class="mt-3 text-sm"> order.payment </p>
+                        <p class="mt-3 text-sm"> {{ order.payment?.payment_method_type.toUpperCase() }} </p>
                     </div>
 
 
@@ -125,7 +130,30 @@ const currentIndex = computed(() => {
                 </div>
 
                 <!-- Right: order summary -->
-                <OrderSummary :subtotal="order.subtotal" :total = "order.total" :shipping_fee="order.shipping_fee">
+                <OrderSummary :subtotal="order.subtotal" :total="order.total" :shipping_fee="order.shipping_fee">
+                    <template #forButtons>
+                        <div class="flex flex-wrap gap-2 justify-center mt-5">
+
+
+                            <!-- Retry payment -->
+                            <Link v-if="order.status.value === 'pending'"
+                                :href="route('orders.retry-payment', { order: order })" method="post" as="button"
+                                class="inline-flex items-center gap-1.5 w-full justify-center rounded-full border border-[#1B1B1F]/20 px-4 py-1.5 text-xs font-medium text-amber-700 transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">
+                                <RotateCcw class="h-3.5 w-3.5" />
+                                Retry payment
+                            </Link>
+
+
+
+                            <!-- Cancel order -->
+                            <Link v-if="order.status.value === 'processing' || order.status.value === 'pending'"
+                                :href="route('orders.cancel', { order: order })" method="patch"
+                                class="inline-flex items-center gap-1.5 w-full justify-center rounded-full border border-[#8C3B3B]/30 px-4 py-1.5 text-xs font-medium text-[#8C3B3B] transition hover:border-[#8C3B3B] hover:bg-[#8C3B3B] hover:text-white">
+                                <XCircle class="h-3.5 w-3.5" />
+                                Cancel order
+                            </Link>
+                        </div>
+                    </template>
                 </OrderSummary>
             </div>
         </section>

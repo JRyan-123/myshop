@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/cancel', [CustomerOrderController::class, 'cancel'])->name('checkout.cancel');
     Route::post('/checkout/{order}/retry-payment', [CustomerOrderController::class, 'retryPayment'])->name('orders.retry-payment');
     Route::patch('/orders/{order}/cancel', [CustomerOrderController::class, 'cancelOrder'])->name('orders.cancel');
+
 });
 
 

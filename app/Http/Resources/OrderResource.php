@@ -44,12 +44,16 @@ class OrderResource extends JsonResource
                 'label' => $this->status->label(),
 
                 'transitions' => collect($this->status->allowedTransitions())
-                    ->map(fn ($status) => [
+                    ->map(fn($status) => [
                         'value' => $status->value,
                         'label' => $status->label(),
                     ])->values(),
 
             ],
+
+            'payment' => PaymentResource::make(
+                $this->whenLoaded('payment')
+            ),
 
 
         ];
