@@ -64,7 +64,7 @@ onUnmounted(() => {
                                         <!-- Profile -->
                                         <div class=" flex items-center gap-3">
                                             <div
-                                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#1B1B1F] text-sm font-semibold uppercase text-[#F7F2E7]">
+                                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1B1B1F] text-sm font-semibold uppercase text-[#F7F2E7]">
                                                 {{ user.name?.charAt(0) || 'U' }}
                                             </div>
 
