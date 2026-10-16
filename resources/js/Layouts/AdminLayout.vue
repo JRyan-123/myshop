@@ -1,11 +1,13 @@
 <script setup>
 import AdminNav from '@/Components/Layout/AdminNav.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { LogOut } from 'lucide-vue-next';
+import { ArrowLeftRight, LogOut } from 'lucide-vue-next';
 import { ref } from 'vue'
 
 import { usePage } from '@inertiajs/vue3'
 import Flashtoast from '@/Components/Layout/Flashtoast.vue';
+import ToClient from '@/Components/Admin/ToClient.vue';
+
 
 const page = usePage()
 
@@ -80,10 +82,7 @@ const sidebarOpen = ref(false)
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <Link :href="route('profile.edit')"
-                        class="flex h-9 w-9 items-center justify-center rounded-full bg-[#1B1B1F] text-sm font-medium text-[#F7F2E7]">
-                        A
-                    </Link>
+                    <ToClient />
                 </div>
             </header>
 

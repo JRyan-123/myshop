@@ -5,6 +5,7 @@ import { ChevronDown, CircleUser, ShoppingBag, ShoppingCart } from 'lucide-vue-n
 import Dropdown from '../Dropdown.vue'
 import DropdownLink from '../DropdownLink.vue'
 
+
 const menuOpen = ref(false)
 const scrolled = ref(false)
 
@@ -40,7 +41,7 @@ onUnmounted(() => {
                         Browse
                     </Link>
                 </li>
-                <li>Categories</li>
+                <li>About</li>
 
             </ul>
 
@@ -52,16 +53,29 @@ onUnmounted(() => {
                     <Link :href="route('orders.index')" class="text-sm font-medium hover:text-[#B08D57]">
                         <ShoppingBag />
                     </Link>
+
+
                     <div class="relative text-center ms-3">
                         <Dropdown align="right" width="48">
                             <template #trigger>
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
                                         class="inline-flex gap-2 items-center text-sm font-medium hover:text-[#B08D57]">
-                                        {{ user.name }}
-                                        <div class="flex">
-                                        <CircleUser />
-                                        <ChevronDown />
+                                        <!-- Profile -->
+                                        <div class=" flex items-center gap-3">
+                                            <div
+                                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#1B1B1F] text-sm font-semibold uppercase text-[#F7F2E7]">
+                                                {{ user.name?.charAt(0) || 'U' }}
+                                            </div>
+
+                                            <div class="min-w-0">
+                                                <p class="truncate text-sm font-semibold text-[#1B1B1F]">
+                                                    {{ user.name }}
+                                                </p>
+                                                <p class="truncate text-xs font-normal text-[#1B1B1F]/60">
+                                                    {{ user.email }}
+                                                </p>
+                                            </div>
                                         </div>
 
                                     </button>
@@ -72,12 +86,19 @@ onUnmounted(() => {
                                 <DropdownLink :href="route('profile.edit')">
                                     Profile
                                 </DropdownLink>
+                                <DropdownLink :href="route('admin.index')" v-if="user.role === 'admin'">
+                                    Admin Dashboard
+                                </DropdownLink>
                                 <DropdownLink :href="route('logout')" method="post" as="button">
                                     Log Out
                                 </DropdownLink>
+
                             </template>
+
                         </Dropdown>
+
                     </div>
+                    <ToClient />
                 </div>
             </template>
 
@@ -108,19 +129,93 @@ onUnmounted(() => {
         </nav>
 
         <!-- Mobile menu -->
-        <div v-if="menuOpen" class="border-t border-black/10 bg-[#F7F2E7] px-6 py-4 md:hidden">
-            <ul class="flex flex-col gap-4 text-sm font-medium">
-                <li><a href="#" class="hover:text-[#B08D57]">Browse</a></li>
-                <li><a href="#" class="hover:text-[#B08D57]">Genres</a></li>
-                <li><a href="#" class="hover:text-[#B08D57]">Authors</a></li>
-                <li><a href="#" class="hover:text-[#B08D57]">About</a></li>
-                <li class="pt-2"><a href="/login" class="hover:text-[#B08D57]">Sign in</a></li>
+
+        <!-- Mobile menu -->
+        <div v-if="menuOpen" class="border-t border-black/10 bg-[#F7F2E7] px-6 py-5 md:hidden">
+            <!-- Navigation links -->
+            <ul class="flex flex-col gap-1 text-sm font-medium">
                 <li>
-                    <a href="/register" class="inline-block rounded-full bg-[#1B1B1F] px-5 py-2 text-[#F7F2E7]">
-                        Get started
+                    <a href="#" @click="menuOpen = false"
+                        class="block rounded-lg px-3 py-2.5 transition hover:bg-black/5 hover:text-[#B08D57]">
+                        Browse Books
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" @click="menuOpen = false"
+                        class="block rounded-lg px-3 py-2.5 transition hover:bg-black/5 hover:text-[#B08D57]">
+                        About
                     </a>
                 </li>
             </ul>
+
+            <!-- Guest menu -->
+            <div v-if="!user" class="mt-4 border-t border-black/10 pt-4">
+                <div class="flex flex-col gap-3">
+                    <a href="/login" @click="menuOpen = false"
+                        class="block rounded-full border border-[#1B1B1F]/20 px-5 py-2.5 text-center font-medium transition hover:border-[#B08D57] hover:text-[#B08D57]">
+                        Sign in
+                    </a>
+
+                    <a href="/register" @click="menuOpen = false"
+                        class="block rounded-full bg-[#1B1B1F] px-5 py-2.5 text-center font-medium text-[#F7F2E7] transition hover:bg-[#B08D57] hover:text-[#1B1B1F]">
+                        Get started
+                    </a>
+                </div>
+            </div>
+
+            <!-- Authenticated user menu -->
+            <div v-else class="mt-4 border-t border-black/10 pt-4">
+                <!-- User profile -->
+                <div class="mb-4 flex items-center gap-3 px-3">
+                    <div
+                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#1B1B1F] text-sm font-semibold uppercase text-[#F7F2E7]">
+                        {{ user.name?.charAt(0) || 'U' }}
+                    </div>
+
+                    <div class="min-w-0">
+                        <p class="truncate text-sm font-semibold text-[#1B1B1F]">
+                            {{ user.name }}
+                        </p>
+                        <p class="truncate text-xs font-normal text-[#1B1B1F]/60">
+                            {{ user.email }}
+                        </p>
+                    </div>
+                </div>
+
+                <ul class="flex flex-col gap-1 text-sm font-medium">
+                    <li>
+                        <a href="/orders" @click="menuOpen = false"
+                            class="block rounded-lg px-3 py-2.5 transition hover:bg-black/5 hover:text-[#B08D57]">
+                            My Orders
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/profile" @click="menuOpen = false"
+                            class="block rounded-lg px-3 py-2.5 transition hover:bg-black/5 hover:text-[#B08D57]">
+                            My Account
+                        </a>
+                    </li>
+
+                    <!-- Optional admin link -->
+                    <li v-if="user.role === 'admin'">
+                        <a href="/admin" @click="menuOpen = false"
+                            class="block rounded-lg px-3 py-2.5 transition hover:bg-black/5 hover:text-[#B08D57]">
+                            Admin Dashboard
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Logout -->
+                <div class="mt-4 border-t border-black/10 pt-4">
+                    <button type="button" @click="logout"
+                        class="w-full rounded-full border border-black/15 px-5 py-2.5 text-center font-medium text-[#1B1B1F] transition hover:border-red-300 hover:bg-red-50 hover:text-red-700">
+                        Sign out
+                    </button>
+                </div>
+            </div>
         </div>
+
     </header>
 </template>
