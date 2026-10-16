@@ -34,56 +34,53 @@ const orders = props.orders.data;
 
             <!-- Order list -->
             <ul v-if="orders" class="space-y-4">
+
                 <li v-for="order in orders" :key="order.id"
                     class="rounded-2xl border border-black/10 bg-white/50 p-5 transition hover:border-[#B08D57]">
-                    <div class="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                            <p class="font-serif text-base font-semibold">Order #{{ order.order_number }}</p>
-                            <p class="text-xs text-[#1B1B1F]/60">{{ order.date }}</p>
+                    <Link :href="route('orders.show', { order: order })">
+
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                                <p class="font-serif text-base font-semibold">Order #{{ order.order_number }}</p>
+                                <p class="text-xs text-[#1B1B1F]/60">{{ order.date }}</p>
+                            </div>
+
+                            <span class="rounded-full px-3 py-1 text-xs font-medium"
+                                :class="statusStyles[order.status.value]">
+                                {{ order.status.label }}
+                            </span>
                         </div>
 
-                        <span class="rounded-full px-3 py-1 text-xs font-medium"
-                            :class="statusStyles[order.status.value]">
-                            {{ order.status.label }}
-                        </span>
-                    </div>
+                        <p class="mt-3 text-sm text-[#1B1B1F]/70">
+                            {{order.order_items.map(item => item.product_name).join(', ')}}
+                        </p>
 
-                    <p class="mt-3 text-sm text-[#1B1B1F]/70">
-                        {{order.order_items.map(item => item.product_name).join(', ')}}
-                    </p>
+                        <div class="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
+                            <span class="font-medium">{{ formatPrice(order.total) }}</span>
+                            <div class="flex flex-wrap gap-2">
 
-                    <div class="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
-                        <span class="font-medium">{{ formatPrice(order.total) }}</span>
-                        <div class="flex flex-wrap gap-2">
 
-                            <!-- View order -->
-                            <Link :href="route('orders.show', { order: order })"
-                                class="inline-flex items-center gap-1.5 rounded-full border border-[#1B1B1F]/20 px-4 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:bg-black hover:text-white">
-                                <ReceiptText class="h-3.5 w-3.5" />
-                                View order
-                            </Link>
-                            
-
-                            <!-- Retry payment -->
-                            <Link v-if="order.status.value === 'pending'"
-                                :href="route('orders.retry-payment', { order: order })" method="post" as="button"
-                                class="inline-flex items-center gap-1.5 rounded-full border border-[#1B1B1F]/20 px-4 py-1.5 text-xs font-medium text-amber-700 transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">
-                                <RotateCcw class="h-3.5 w-3.5" />
-                                Retry payment
-                            </Link>
+                                <!-- Retry payment -->
+                                <Link v-if="order.status.value === 'pending'"
+                                    :href="route('orders.retry-payment', { order: order })" method="post" as="button"
+                                    class="inline-flex items-center gap-1.5 rounded-full border border-[#1B1B1F]/20 px-4 py-1.5 text-xs font-medium text-amber-700 transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">
+                                    <RotateCcw class="h-3.5 w-3.5" />
+                                    Retry payment
+                                </Link>
 
 
 
-                            <!-- Cancel order -->
-                            <Link v-if="order.status.value === 'processing' || order.status.value === 'pending'"
-                                :href="route('orders.cancel', { order: order })" method="patch" 
-                                class="inline-flex items-center gap-1.5 rounded-full border border-[#8C3B3B]/30 px-4 py-1.5 text-xs font-medium text-[#8C3B3B] transition hover:border-[#8C3B3B] hover:bg-[#8C3B3B] hover:text-white">
-                                <XCircle class="h-3.5 w-3.5" />
-                                Cancel order
-                            </Link>
+                                <!-- Cancel order -->
+                                <Link v-if="order.status.value === 'processing' || order.status.value === 'pending'"
+                                    :href="route('orders.cancel', { order: order })" method="patch"
+                                    class="inline-flex items-center gap-1.5 rounded-full border border-[#8C3B3B]/30 px-4 py-1.5 text-xs font-medium text-[#8C3B3B] transition hover:border-[#8C3B3B] hover:bg-[#8C3B3B] hover:text-white">
+                                    <XCircle class="h-3.5 w-3.5" />
+                                    Cancel order
+                                </Link>
+                            </div>
+
                         </div>
-
-                    </div>
+                    </Link>
                 </li>
             </ul>
 
