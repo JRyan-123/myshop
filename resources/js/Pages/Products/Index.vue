@@ -2,8 +2,8 @@
 import { Head, Link, router } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { ref } from "vue";
-import { toast } from "vue-sonner";
 import Pagination from "@/Components/Products/Pagination.vue";
+import { formatPrice } from "@/utils/FormatPrice";
 
 defineOptions({
     layout: AppLayout,
@@ -154,7 +154,7 @@ const addToCart = (productId) => {
                         </p>
 
                         <div class="mt-2 flex items-center justify-between">
-                            <span class="font-medium"> ${{ book.price }} </span>
+                            <span class="font-medium"> {{ formatPrice(book.price) }} </span>
 
                             <button @click="addToCart(book.id)"
                                 class="rounded-full border border-[#1B1B1F]/20 px-3 py-1.5 text-xs font-medium transition hover:border-[#B08D57] hover:bg-[#B08D57] hover:text-white">

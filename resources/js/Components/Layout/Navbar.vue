@@ -41,7 +41,11 @@ onUnmounted(() => {
                         Browse
                     </Link>
                 </li>
-                <li>About</li>
+                <li>
+                    <Link href="#" class="hover:text-[#B08D57]">
+                        About
+                    </Link>
+                </li>
 
             </ul>
 
