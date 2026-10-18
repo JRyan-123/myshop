@@ -2,7 +2,6 @@
 
 namespace App\Enums;
 
-
 enum OrderStatus: string
 {
     case Pending = 'pending';
@@ -28,7 +27,7 @@ enum OrderStatus: string
 
     public function allowedTransitions()
     {
-        return match($this){
+        return match ($this) {
             self::Pending => [
                 self::Paid,
                 self::Cancelled,
@@ -39,7 +38,7 @@ enum OrderStatus: string
                 self::Processing,
                 self::Cancelled,
             ],
-            
+
             self::Processing => [
                 self::Shipped,
                 self::Cancelled,
