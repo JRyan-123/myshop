@@ -22,6 +22,7 @@ use Inertia\Inertia;
 // public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::resource('/products', CustomerProductController::class);
+Route::post('/payment/webhook', [PaymentWebhookController::class, 'webhook'])->name('payment.webhook');
 
 
 
